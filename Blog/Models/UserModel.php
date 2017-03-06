@@ -15,6 +15,7 @@ class UserModel extends Model
         return $stmt->execute([$username, $password, $roleId]);
     }
 
+
     public function userExists(string $username): bool
     {
         $stmt = $this->getDb()->prepare("SELECT id FROM blog.users WHERE username = ?");
@@ -40,3 +41,4 @@ class UserModel extends Model
         return $stmt->fetchObj(User::class);
     }
 }
+
