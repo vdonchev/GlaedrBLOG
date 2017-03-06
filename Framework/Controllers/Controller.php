@@ -19,7 +19,6 @@ abstract class Controller implements ControllerInterface
     private $viewData = [];
 
     private $isAuthorized = false;
-    private $isAdmin = false;
     private $isPost = false;
 
     public function __construct(
@@ -31,7 +30,6 @@ abstract class Controller implements ControllerInterface
 
         $this->isPost = $_SERVER["REQUEST_METHOD"] === "POST";
         $this->isAuthorized = $this->session->propertyExists(Config::USER_ID);
-        $this->isAdmin = $this->session->propertyExists(Config::USER_ADMIN);
 
         $this->request = $_GET;
         if ($this->isPost()) {
@@ -85,7 +83,8 @@ abstract class Controller implements ControllerInterface
 
     public function isAdmin(): bool
     {
-        return $this->isAdmin;
+        $id = intval($this->getSession()->getProperty(Config::USER_ID));
+        return $this->model->isAdmin($id);
     }
 
     public function isPost(): bool

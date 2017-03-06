@@ -19,4 +19,12 @@ abstract class Model implements ModelInterface
     {
         return $this->db;
     }
+
+    public function isAdmin(int $id): bool
+    {
+        $stmt = $this->getDb()->prepare("SELECT users.roleId FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+
+        return intval($stmt->fetchRow()["roleId"]) === 1;
+    }
 }
