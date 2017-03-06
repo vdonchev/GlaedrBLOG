@@ -14,6 +14,7 @@ class UserModel extends Model
         $stmt = $this->getDb()->prepare("INSERT INTO users (username, password, roleId) VALUES (?, ?, ?)");
         return $stmt->execute([$username, $password, $roleId]);
     }
+// test
 
     public function userExists(string $username): bool
     {
@@ -40,3 +41,4 @@ class UserModel extends Model
         return $stmt->fetchObj(User::class);
     }
 }
+
