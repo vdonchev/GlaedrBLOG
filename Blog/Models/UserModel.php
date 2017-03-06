@@ -14,7 +14,7 @@ class UserModel extends Model
         $stmt = $this->getDb()->prepare("INSERT INTO users (username, password, roleId) VALUES (?, ?, ?)");
         return $stmt->execute([$username, $password, $roleId]);
     }
-// tests
+
 
     public function userExists(string $username): bool
     {
