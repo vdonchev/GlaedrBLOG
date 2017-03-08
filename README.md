@@ -5,6 +5,7 @@ Teamwork project @PHP Basics course - softuni.bg 2017
 
 ##Features
 - MVC Architecture
+- Simple Routing using .htaccess
 - Written in PHP 7.1 /strictly typed/
 - Responsive design - Bootstrap 3.3.7 implemented
 

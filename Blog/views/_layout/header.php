@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="<?=\Framework\Core\Config::PUBLIC;?>/styles/bootstrap.min.css">
-    <script src="<?=\Framework\Core\Config::PUBLIC;?>/js/jquery-3.1.1.min.js"></script>
-    <script src="<?=\Framework\Core\Config::PUBLIC;?>/js/bootstrap.min.js"></script>
-    <script src="<?=\Framework\Core\Config::PUBLIC;?>/js/scripts.js"></script>
+    <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>/styles/bootstrap.min.css">
+    <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/jquery-3.1.1.min.js"></script>
+    <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/bootstrap.min.js"></script>
+    <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/scripts.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -13,16 +13,8 @@
 </head>
 <body>
 
-<?php if (!$this->isAuthorized()) : ?>
-    <?php include_once "top_menu-guest.php"; ?>
-<?php else: ?>
-    <?php if ($this->isAdmin()) : ?>
-        <?php include_once "top_menu-admin.php"; ?>
-    <?php else: ?>
-        <?php include_once "top_menu-user.php"; ?>
-    <?php endif; ?>
-<?php endif; ?>
+<?php include_once "menu.php"; ?>
 
 <div class="container">
-<?php include_once "messages.php"; ?>
+    <?php include_once "messages.php"; ?>
     <div class="row">
