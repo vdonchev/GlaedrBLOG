@@ -25,3 +25,4 @@
 
 <div class="container">
 <?php include_once "messages.php"; ?>
+    <div class="row">

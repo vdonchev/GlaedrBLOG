@@ -108,6 +108,7 @@ abstract class Controller implements ControllerInterface
         if ($includeTemplate) {
             include_once Config::VIEWS_PATH . Config::SHARED_VIEWS_PATH . "header.php";
             echo $output;
+            include_once Config::VIEWS_PATH . Config::SHARED_VIEWS_PATH . "sidebar.php";
             include_once Config::VIEWS_PATH . Config::SHARED_VIEWS_PATH . "footer.php";
         } else {
             echo $output;
