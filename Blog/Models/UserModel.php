@@ -18,7 +18,7 @@ class UserModel extends Model
 
     public function userExists(string $username): bool
     {
-        $stmt = $this->getDb()->prepare("SELECT id FROM blog.users WHERE username = ?");
+        $stmt = $this->getDb()->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->execute([$username]);
 
         return $stmt->fetchRow() != null;
@@ -26,7 +26,7 @@ class UserModel extends Model
 
     public function getUser(string $username)
     {
-        $stmt = $this->getDb()->prepare("SELECT * FROM blog.users WHERE username = ?");
+        $stmt = $this->getDb()->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->execute([$username]);
 
         return $stmt->fetchObj(User::class);
@@ -35,7 +35,7 @@ class UserModel extends Model
     public function getUserById(int $id)
     {
         $stmt = $this->getDb()->prepare(
-            "SELECT u.id, u.username, u.createdOn, r.name AS role FROM blog.users AS u LEFT JOIN user_roles AS r ON u.roleId = r.id WHERE u.id = ?");
+            "SELECT u.id, u.username, u.createdOn, r.name AS role FROM users AS u LEFT JOIN user_roles AS r ON u.roleId = r.id WHERE u.id = ?");
         $stmt->execute([$id]);
 
         return $stmt->fetchObj(User::class);
