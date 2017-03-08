@@ -10,12 +10,14 @@ class Config
     {
     }
 
+    // edit
+
     const DB_HOST = "127.0.0.1";
-    const DB_NAME = "blog";
+    const DB_NAME = "blog_php";
     const DB_USER = "root";
     const DB_PASS = "";
 
-    const APP_ROOT = "";
+    const APP_ROOT = "/blog";
     const PUBLIC = self::APP_ROOT . "/public/";
     const DEFAULT_CONTROLLER = "home";
     const DEFAULT_ACTION = "index";
