@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <!--  CSS  -->
     <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>/styles/styles.css">
+
+    <!--  JS  -->
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/jquery-3.1.1.min.js"></script>
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/bootstrap.min.js"></script>
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>/js/scripts.js"></script>

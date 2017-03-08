@@ -1,8 +1,9 @@
 <div class="col-md-9">
+    <h1 class="h2">Register:</h1>
+    <hr>
     <form class="form-horizontal" method="post" action="<?=\Framework\Core\Config::APP_ROOT;?>/user/register">
         <fieldset>
-            <legend>Register</legend>
-            <div class="form-group">
+            <div class="form-group danger">
                 <label for="username" class="col-lg-2 control-label">Username
                 </label>
                 <div class="col-lg-10">
@@ -10,7 +11,6 @@
                            autocomplete="off">
                 </div>
             </div>
-            <hr>
             <div class="form-group">
                 <label for="password" class="col-lg-2 control-label">Password</label>
                 <div class="col-lg-10">

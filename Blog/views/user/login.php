@@ -1,7 +1,8 @@
 <div class="col-md-9">
+    <h1 class="h2">Login form:</h1>
+    <hr>
     <form class="form-horizontal" method="post" action="<?=\Framework\Core\Config::APP_ROOT;?>/user/login">
         <fieldset>
-            <legend>Login</legend>
             <div class="form-group">
                 <label for="username" class="col-lg-2 control-label">Username
                 </label>

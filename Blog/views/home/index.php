@@ -1,5 +1,7 @@
 <div class="col-md-9">
-    <h1 class="h2">Welcome to our blog</h1>
-    <hr>
-    <p>Content here</p>
+    <div class="jumbotron">
+        <h1>Welcome to our Blog!</h1>
+        <p>A simple PHP based Blog web application. Developed with PHP 7 and MySQL 5.6.</p>
+        <p><a class="btn btn-primary btn-lg" href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts">Start reading</a></p>
+    </div>
 </div>
