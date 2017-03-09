@@ -8,9 +8,14 @@ use Framework\Controllers\Controller;
 
 class PostsController extends Controller
 {
-    public function index($pageIndex = 0)
+    public function index()
     {
-        echo "Posts controller - index action";
+        $this->redirect("posts", "all");
+    }
+
+    public function all($pageIndex = 0)
+    {
+        echo "Posts controller - all action";
         // TODO
     }
 
