@@ -1,4 +1,4 @@
-<?php /** @var $user \Blog\Models\Entities\User */ ?>
+<?php /** @var $user \Blog\Models\Entities\UserEntity */ ?>
 <?php $user = $this->getData()["user"]; ?>
 <div class="col-md-9">
     <h1 class="h2">Your Profile</h1>

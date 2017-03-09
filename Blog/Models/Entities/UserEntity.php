@@ -4,7 +4,7 @@
 namespace Blog\Models\Entities;
 
 
-class User
+class UserEntity
 {
     private $id;
     private $username;

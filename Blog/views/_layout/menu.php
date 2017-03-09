@@ -28,7 +28,7 @@
                 <?php else: ?>
                     <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/user/profile">Profile</a></li>
                     <?php if ($this->isAdmin()) : ?>
-                        <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/post/add">Add post</a></li>
+                        <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/posts/add">Add post</a></li>
                     <?php endif; ?>
 
                     <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/user/logout">Logout</a></li>

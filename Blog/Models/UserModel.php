@@ -4,7 +4,7 @@
 namespace Blog\Models;
 
 
-use Blog\Models\Entities\User;
+use Blog\Models\Entities\UserEntity;
 use Framework\Models\Model;
 
 class UserModel extends Model
@@ -29,7 +29,7 @@ class UserModel extends Model
         $stmt = $this->getDb()->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->execute([$username]);
 
-        return $stmt->fetchObj(User::class);
+        return $stmt->fetchObj(UserEntity::class);
     }
 
     public function getUserById(int $id)
@@ -38,7 +38,7 @@ class UserModel extends Model
             "SELECT u.id, u.username, u.createdOn, r.name AS role FROM users AS u LEFT JOIN user_roles AS r ON u.roleId = r.id WHERE u.id = ?");
         $stmt->execute([$id]);
 
-        return $stmt->fetchObj(User::class);
+        return $stmt->fetchObj(UserEntity::class);
     }
 }
 

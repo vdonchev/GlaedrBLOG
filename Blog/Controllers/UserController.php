@@ -4,7 +4,7 @@
 namespace Blog\Controllers;
 
 
-use Blog\Models\Entities\User;
+use Blog\Models\Entities\UserEntity;
 use Blog\Models\UserModel;
 use Framework\Controllers\Controller;
 use Framework\Core\Config;
@@ -34,7 +34,7 @@ class UserController extends Controller
             $password = $this->getRequest()["password"];
 
             /**
-             * @var User $user
+             * @var UserEntity $user
              */
             $user = $model->getUser($username);
 
