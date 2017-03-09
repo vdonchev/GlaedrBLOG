@@ -13,7 +13,7 @@
             </a>
         </div>
         <form class="navbar-form navbar-left" role="search" method="post"
-              action="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/search">
+              action="<?= \Framework\Core\Config::APP_ROOT; ?>/search">
             <div class="form-group">
                 <input type="text" name="searchTag" class="form-control" placeholder="Find posts by tag">
             </div>
