@@ -1,7 +1,7 @@
 <div class="col-md-9">
-    <h1 class="h2">Create post:</h1>
+    <h1 class="h2">Edit post:</h1>
     <hr>
-    <form class="form-horizontal" method="post" action="<?=\Framework\Core\Config::APP_ROOT;?>/posts/add">
+    <form class="form-horizontal" method="post" action="<?=\Framework\Core\Config::APP_ROOT;?>/posts/edit">
         <fieldset>
             <div class="form-group">
                 <label for="postTitle" class="col-lg-2 control-label">Title
@@ -26,8 +26,8 @@
             <hr>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <button type="submit" class="btn btn-primary" name="createPost">Create</button>
-                    <button type="submit" class="btn btn-default" name="cancelAdding">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="editPost">Edit</button>
+                    <button type="submit" class="btn btn-default" name="cancelEditing">Cancel</button>
                 </div>
             </div>
         </fieldset>
