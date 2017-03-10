@@ -25,21 +25,30 @@
             </div>
             <div class="panel-footer">
                 <div class="row">
-                    <div class="col-md-6">
-                        <a class="btn btn-warning" href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
-                        </a>
-                        <a class="btn btn-danger" href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            Delete
-                        </a>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default post-meta">
+                            <div class="panel-body ">
+                                <ul class="post-meta list-unstyled list-inline">
+                                    <li>Posted on: <?= $post->getCreatedOn(); ?></li>
+                                    <li>Author: <strong><?= renderInView($post->getAuthor()); ?></strong></li>
+                                </ul>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <ul class="list-unstyled list-inline text-right">
-                            <li><span>Posted on: <?= $post->getCreatedOn(); ?></span></li>
-                            <li><span>By: <strong><?= renderInView($post->getAuthor()); ?></strong></span></li>
-                        </ul>
-                    </div>
+                    <?php if ($this->isAuthorized() && $this->isAdmin()): ; ?>
+                        <div class="col-sm-6 text-right">
+                            <a class="btn btn-warning btn-sm"
+                               href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                            </a>
+                            <a class="btn btn-danger btn-sm"
+                               href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                Delete
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
