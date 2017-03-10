@@ -19,7 +19,7 @@
                     <hr>
                     <div class="h4">
                         Tags:
-                        <span class="label label-primary"><?php echo renderInView(implode("</span> <span class='label label-primary'>", $post->getTags())); ?></span>
+                        <span class="label label-primary"><?php echo implode("</span> <span class='label label-primary'>", array_map("renderInView", $post->getTags())); ?></span>
                     </div>
                 <?php endif; ?>
             </div>
