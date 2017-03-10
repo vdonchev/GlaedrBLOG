@@ -7,6 +7,7 @@ namespace Framework\Controllers;
 use Framework\Core\Config;
 use Framework\Core\Session\SessionInterface;
 use Framework\Core\Utilities\Constants;
+use Framework\Models\Model;
 use Framework\Models\ModelInterface;
 
 abstract class Controller implements ControllerInterface
@@ -85,6 +86,19 @@ abstract class Controller implements ControllerInterface
     {
         $id = intval($this->getSession()->getProperty(Config::USER_ID));
         return $this->model->isAdmin($id);
+    }
+
+    public function getTemplate(): string
+    {
+        $curUserId = $this->session->getProperty(Config::USER_ID);
+
+        /**
+         * @var $model Model
+         */
+        $model = $this->getModel();
+        $user = $model->getUserById($curUserId);
+
+        return $user->getTemplateFile();
     }
 
     public function isPost(): bool

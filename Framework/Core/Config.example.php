@@ -30,4 +30,6 @@ class Config
     const USER_ID = "userId";
     const USER_ADMIN = "isAdmin";
     const SESSION_MESSAGES_KEY = "___MESSAGES___";
+
+    const POSTS_PER_PAGE = 5;
 }

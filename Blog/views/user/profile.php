@@ -22,6 +22,26 @@
             <td><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Registration date</td>
             <td><?= renderInView($user->getCreatedOn()) ?></td>
         </tr>
+        <tr>
+            <?php /** @var $templates \Blog\Models\Entities\TemplateEntity[] */ ?>
+            <?php $templates = $this->getData()["templates"]; ?>
+            <td><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Site Template</td>
+            <td>
+                <form class="form-inline" method="post" action="<?= \Framework\Core\Config::APP_ROOT; ?>/user/template">
+                    <select class="form-control" name="template" id="template" title="Templates">
+                        <?php foreach ($templates as $template): ; ?>
+                            <option value="<?= $template->getId(); ?>"
+                                <?php if ($user->getTemplateFile() === $template->getCssFile()) : ; ?>
+                                    <?= " selected='true'"; ?>
+                                <?php endif; ?>>
+                                <?= $template->getName(); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input class="btn btn-success" type="submit" value="Update">
+                </form>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

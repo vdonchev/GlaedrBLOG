@@ -22,6 +22,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/home">Home</a></li>
+                <li><a href="<?=\Framework\Core\Config::APP_ROOT;?>/posts">Posts</a></li>
                 <?php if (!$this->isAuthorized()) : ?>
                     <li><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/user/login">Login</a></li>
                     <li><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/user/register">Register</a></li>

@@ -4,7 +4,9 @@
 namespace Blog\Controllers;
 
 
+use Blog\Models\PostsModel;
 use Framework\Controllers\Controller;
+use Framework\Core\Config;
 
 class PostsController extends Controller
 {
@@ -13,10 +15,40 @@ class PostsController extends Controller
         $this->redirect("posts", "all");
     }
 
-    public function all($pageIndex = 0)
+    public function all($data)
     {
-        echo "Posts controller - all action";
-        // TODO
+        if (!isset($data[0])) {
+            $data[0] = 1;
+        }
+
+        $selectedPage = filter_var($data[0], FILTER_VALIDATE_INT);
+        if ($selectedPage === false) {
+            $selectedPage = 1;
+        }
+
+        if ($selectedPage <= 0) {
+            $selectedPage = 1;
+        }
+
+        /**
+         * @var $model PostsModel
+         */
+        $model = $this->getModel();
+
+        $numberOfPosts = $model->getNumberOfPosts();
+        $firstPage = 1;
+        $lastPage = ceil($numberOfPosts / Config::POSTS_PER_PAGE);
+
+        if ($lastPage < $selectedPage) {
+            $selectedPage = $lastPage;
+        }
+
+        $this->addData("posts", $model->getPostsPerPage($selectedPage));
+        $this->addData("firstPage", $firstPage);
+        $this->addData("lastPage", $lastPage);
+        $this->addData("selectedPage", $selectedPage);
+
+        $this->renderView("posts/all");
     }
 
     public function add()

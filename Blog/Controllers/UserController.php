@@ -112,6 +112,10 @@ class UserController extends Controller
 
         $user = $model->getUserById($this->getSession()->getProperty(Config::USER_ID));
         $this->addData("user", $user);
+
+        $templates = $model->getAllTemplates();
+        $this->addData("templates", $templates);
+
         $this->renderView("user/profile");
     }
 
@@ -124,5 +128,32 @@ class UserController extends Controller
         $this->getSession()->unsetProperty(Config::USER_ID);
         $this->getSession()->addMessage("Logged out successfully", Messages::INFO);
         $this->redirect("home");
+    }
+
+    public function template()
+    {
+        if (!$this->isPost() || !$this->isAuthorized()) {
+            $this->getSession()->addMessage("Access denied", Messages::DANGER);
+            $this->redirect("user", "profile");
+        }
+
+        $templateId = filter_var($_POST["template"], FILTER_VALIDATE_INT);
+        if ($templateId === false) {
+            $this->redirect("user", "profile");
+        }
+
+        $userId = $this->getSession()->getProperty(Config::USER_ID);
+
+        /**
+         * @var $model UserModel
+         */
+        $model = $this->getModel();
+        if ($model->setTemplate($templateId, $userId)) {
+            $this->getSession()->addMessage("Template changed successfully", Messages::SUCCESS);
+            $this->redirect("user", "profile");
+        }
+
+        $this->getSession()->addMessage("Template change error. Try again", Messages::DANGER);
+        $this->redirect("user", "profile");
     }
 }

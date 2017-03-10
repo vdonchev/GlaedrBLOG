@@ -4,6 +4,7 @@
 namespace Blog\Models;
 
 
+use Blog\Models\Entities\TemplateEntity;
 use Blog\Models\Entities\UserEntity;
 use Framework\Models\Model;
 
@@ -15,11 +16,26 @@ class UserModel extends Model
         return $stmt->execute([$username, $password, $roleId]);
     }
 
-
     public function userExists(string $username): bool
     {
         $stmt = $this->getDb()->prepare("SELECT id FROM users WHERE username = ?");
         $stmt->execute([$username]);
+
+        return $stmt->fetchRow() != null;
+    }
+
+    public function userExistsById(int $id): bool
+    {
+        $stmt = $this->getDb()->prepare("SELECT id FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+
+        return $stmt->fetchRow() != null;
+    }
+
+    public function templateExists(int $id): bool
+    {
+        $stmt = $this->getDb()->prepare("SELECT id FROM templates WHERE id = ?");
+        $stmt->execute([$id]);
 
         return $stmt->fetchRow() != null;
     }
@@ -32,13 +48,29 @@ class UserModel extends Model
         return $stmt->fetchObj(UserEntity::class);
     }
 
-    public function getUserById(int $id)
+    public function getAllTemplates(): array
     {
-        $stmt = $this->getDb()->prepare(
-            "SELECT u.id, u.username, u.createdOn, r.name AS role FROM users AS u LEFT JOIN user_roles AS r ON u.roleId = r.id WHERE u.id = ?");
-        $stmt->execute([$id]);
+        $stmt = $this->getDb()->prepare("SELECT id, name, cssFile FROM templates");
+        $stmt->execute();
 
-        return $stmt->fetchObj(UserEntity::class);
+        $templates = [];
+        while ($template = $stmt->fetchObj(TemplateEntity::class)) {
+            $templates[] = $template;
+        }
+
+        return $templates;
+    }
+
+    public function setTemplate(int $templateId, int $userId): bool
+    {
+        if (!$this->userExistsById($userId) || !$this->templateExists($templateId)) {
+            return false;
+        }
+
+        $stmt = $this->getDb()->prepare("UPDATE users SET template_id = ? WHERE id = ?");
+        $stmt->execute([$templateId, $userId]);
+
+        return true;
     }
 }
 

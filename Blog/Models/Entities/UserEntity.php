@@ -11,6 +11,8 @@ class UserEntity
     private $password;
     private $roleId;
     private $role;
+    private $templateName;
+    private $templateFile;
     private $createdOn;
     private $updatedOn;
 
@@ -47,5 +49,10 @@ class UserEntity
     public function getUpdatedOn()
     {
         return $this->updatedOn;
+    }
+
+    public function getTemplateFile()
+    {
+        return $this->templateFile;
     }
 }
