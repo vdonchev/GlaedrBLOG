@@ -67,7 +67,7 @@ class UserModel extends Model
             return false;
         }
 
-        $stmt = $this->getDb()->prepare("UPDATE users SET template_id = ? WHERE id = ?");
+        $stmt = $this->getDb()->prepare("UPDATE users SET templateId = ? WHERE id = ?");
         $stmt->execute([$templateId, $userId]);
 
         return true;

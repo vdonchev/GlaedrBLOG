@@ -44,7 +44,7 @@ abstract class Model implements ModelInterface
                                         FROM 
                                             users
                                         INNER JOIN templates 
-                                            ON templates.id = users.template_id
+                                            ON templates.id = users.templateId
                                         INNER JOIN user_roles
                                             ON user_roles.id = users.roleId
                                         WHERE users.id = ?");
