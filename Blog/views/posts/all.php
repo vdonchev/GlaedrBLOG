@@ -7,43 +7,37 @@
                 <h2 class="h3">
                     <strong>
                         <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/view/<?= $post->getId(); ?>">
-                            <?= $post->getTitle(); ?>
+                            <?= renderInView($post->getTitle()); ?>
                         </a>
                     </strong>
                 </h2>
                 <hr>
                 <p class="post-content">
-                    <?= $post->getBody(); ?>
+                    <?= renderInView($post->getBody()); ?>
                 </p>
                 <?php if (count($post->getTags()) > 0) :; ?>
                     <hr>
-                    <div class="">
+                    <div class="h4">
                         Tags:
-                        <strong><?php echo implode(", ", $post->getTags()); ?></strong>
+                        <span class="label label-primary"><?php echo renderInView(implode("</span> <span class='label label-primary'>", $post->getTags())); ?></span>
                     </div>
                 <?php endif; ?>
             </div>
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-md-6">
-                        <ul class="list-unstyled list-inline">
-                            <li>
-                                <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
-                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    Delete
-                                </a>
-                            </li>
-                        </ul>
+                        <a class="btn btn-warning" href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                        </a>
+                        <a class="btn btn-danger" href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            Delete
+                        </a>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled list-inline text-right">
                             <li><span>Posted on: <?= $post->getCreatedOn(); ?></span></li>
-                            <li><span>By: <strong><?= $post->getAuthor(); ?></strong></span></li>
+                            <li><span>By: <strong><?= renderInView($post->getAuthor()); ?></strong></span></li>
                         </ul>
                     </div>
                 </div>
@@ -56,6 +50,8 @@
     <ul class="pager">
         <?php if ($firstPage < $selectedPage): ; ?>
             <li class="previous"><a
+                        href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/1">&lt;&lt;</a></li>
+            <li class="previous"><a
                         href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $selectedPage - 1; ?>">&larr;
                     Newer </a></li>
         <?php else: ; ?>
@@ -63,6 +59,8 @@
         <?php endif; ?>
 
         <?php if ($lastPage > $selectedPage): ; ?>
+            <li class="next"><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $lastPage; ?>">
+                    &gt;&gt;</a></li>
             <li class="next"><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $selectedPage + 1; ?>">
                     Older &rarr;</a></li>
         <?php else: ; ?>
