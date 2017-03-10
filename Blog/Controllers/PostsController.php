@@ -55,7 +55,7 @@ class PostsController extends Controller
 
     public function add()
     {
-        if (!$this->isAuthorized()) {
+        if (!$this->isAdmin()) {
             $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
@@ -70,7 +70,7 @@ class PostsController extends Controller
             $body = trim($this->getRequest()["postBody"]);
             $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
             $updatedOn = $createdOn;
-            $tags = array_filter(array_map("trim", explode(", ", $this->getRequest()["tags"])));
+            $tags = array_filter(array_map("trim", explode(",", $this->getRequest()["tags"])));
 
             if (strlen($title) <= 0) {
                 $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
@@ -116,8 +116,50 @@ class PostsController extends Controller
 
     public function edit($postId)
     {
-        echo "Posts controller - edit action";
-        // TODO
+        if (!$this->isAdmin()) {
+            $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+        if(isset($_POST['editPost'])) {
+            /**
+             * @var PostsModel $postModel
+             */
+            $postModel = $this->getModel();
+
+            $authorId = $this->getSession()->getProperty("userId");
+            $title = trim($this->getRequest()["postTitle"]);
+            $body = trim($this->getRequest()["postBody"]);
+            $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
+            $updatedOn = $createdOn;
+            $tags = array_filter(array_map("trim", explode(",", $this->getRequest()["tags"])));
+
+            if (strlen($title) <= 0) {
+                $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
+            }
+
+            if (strlen($body) <= 0) {
+                $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
+            }
+
+            if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
+                if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
+                    $postId = $postModel->getLastPostId();
+                    foreach ($tags as $tag){
+                        $postModel->addTag($postId,$tag);
+                    }
+                    $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
+                    $this->redirect("posts", "all");
+                }else{
+                    $this->getSession()->addMessage("There was a problem creating the post!", Messages::DANGER);
+                    $this->redirect("posts", "edit");
+                }
+            }
+        }
+        if(isset($_POST['cancelEditing'])) {
+            $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
+            $this->redirect("posts", "all");
+        }
+        $this->renderView("posts/edit");
     }
 
     public function del($postId)
