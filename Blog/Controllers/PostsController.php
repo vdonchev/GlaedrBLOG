@@ -4,6 +4,7 @@
 namespace Blog\Controllers;
 
 
+use Blog\Models\Entities\PostEntity;
 use Blog\Models\PostsModel;
 use Framework\Controllers\Controller;
 use Framework\Core\Config;
@@ -69,6 +70,7 @@ class PostsController extends Controller
             $body = trim($this->getRequest()["postBody"]);
             $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
             $updatedOn = $createdOn;
+            $tags = array_filter(array_map("trim", explode(", ", $this->getRequest()["tags"])));
 
             if (strlen($title) <= 0) {
                 $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
@@ -80,6 +82,10 @@ class PostsController extends Controller
 
             if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
                 if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
+                    $postId = $postModel->getLastPostId();
+                    foreach ($tags as $tag){
+                        $postModel->addTag($postId,$tag);
+                    }
                     $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
                     $this->redirect("posts", "all");
                 }else{
@@ -92,7 +98,7 @@ class PostsController extends Controller
             $this->getSession()->addMessage("You cancelled adding a post!", Messages::INFO);
             $this->redirect("posts", "all");
         }
-            $this->renderView("posts/add");
+        $this->renderView("posts/add");
 
     }
 

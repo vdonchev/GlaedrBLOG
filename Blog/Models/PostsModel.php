@@ -71,9 +71,13 @@ class PostsModel extends Model
         return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
     }
 
-    public function register(string $username, string $password, int $roleId = 2): bool
-    {
-        $stmt = $this->getDb()->prepare("INSERT INTO users (username, password, roleId) VALUES (?, ?, ?)");
-        return $stmt->execute([$username, $password, $roleId]);
+    public function addTag(int $postId, string $tagName){
+        $stmt = $this->getDb()->prepare("INSERT INTO post_tags (postId, name) VALUES (?, ?)");
+        return $stmt->execute([$postId, $tagName]);
+    }
+
+    public function getLastPostId() : int {
+        $stmt = $this->getDb()->getLastId();
+        return $stmt;
     }
 }
