@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label for="tags" class="col-lg-2 control-label">Tags</label>
                 <div class="col-lg-10">
-                    <textarea class="form-control" rows="2" name="tags" id="tags" placeholder="tag1,tag2,tag3 ..." data-gramm="true" data-txt_gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" data-gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 21.4286px; font-size: 15px; transition: none; background: transparent !important; resize: none"></textarea>
+                    <textarea class="form-control" required rows="2" name="tags" id="tags" placeholder="tag1,tag2,tag3 ..." data-gramm="true" data-txt_gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" data-gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 21.4286px; font-size: 15px; transition: none; background: transparent !important; resize: none"></textarea>
                 </div>
             </div>
             <hr>

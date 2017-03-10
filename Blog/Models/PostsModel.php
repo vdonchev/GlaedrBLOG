@@ -67,14 +67,32 @@ class PostsModel extends Model
     }
 
     public function addPost(int $authorId,string $title,string $body,string $createdOn,string $updatedOn)
+{
+    $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body, createdOn, updatedOn) VALUES (?, ?, ?, ?, ?)");
+    return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
+}
+
+    public function editPost(string $title, string $body, int $postId)
     {
-        $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body, createdOn, updatedOn) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
+        $stmt = $this->getDb()->prepare("UPDATE posts SET title = ?, body = ? WHERE id = ?");
+        return $stmt->execute([$title, $body, $postId]);
     }
 
     public function addTag(int $postId, string $tagName){
         $stmt = $this->getDb()->prepare("INSERT INTO post_tags (postId, name) VALUES (?, ?)");
         return $stmt->execute([$postId, $tagName]);
+    }
+
+    public function getPostById(int $id) : PostEntity{
+        $stmt = $this->getDb()->prepare("SELECT * FROM posts WHERE id = ?");
+        $stmt->execute([$id]);
+
+        /**
+         * @var $post PostEntity
+         */
+        $post = $stmt->fetchObj(PostEntity::class);
+        echo (gettype($post));// eto tyk vrushta bool i za tova gurmi
+        return $post;
     }
 
     public function getLastPostId() : int {
