@@ -66,15 +66,15 @@ class PostsController extends Controller
 
             $authorId = $this->getSession()->getProperty("userId");
             $title = trim($this->getRequest()["postTitle"]);
-            $body = $this->getRequest()["postBody"];
+            $body = trim($this->getRequest()["postBody"]);
             $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
             $updatedOn = $createdOn;
 
-            if (strlen($title) < 1) {
-                $this->getSession()->addMessage("Title should be at least 1 characters long.", Messages::DANGER);
+            if (strlen($title) <= 0) {
+                $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
             }
 
-            if (strlen($body) < 0) {
+            if (strlen($body) <= 0) {
                 $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
             }
 
@@ -84,10 +84,13 @@ class PostsController extends Controller
                     $this->redirect("posts", "all");
                 }else{
                     $this->getSession()->addMessage("There was a problem creating the post!", Messages::DANGER);
-                    echo $authorId;
-                   // $this->redirect("posts", "all");
+                    $this->redirect("posts", "add");
                 }
             }
+        }
+        if(isset($_POST['cancelAdding'])) {
+            $this->getSession()->addMessage("You cancelled adding a post!", Messages::INFO);
+            $this->redirect("posts", "all");
         }
             $this->renderView("posts/add");
 
