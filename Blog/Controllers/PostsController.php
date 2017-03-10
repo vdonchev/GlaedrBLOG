@@ -129,44 +129,38 @@ class PostsController extends Controller
                 $this->redirect("posts", "all");
             }
 
-            if (isset($_POST['editPost'])) {
-                /**
-                 * @var PostsModel $postModel
-                 */
-                $postModel = $this->getModel();
+            /**
+             * @var PostsModel $postModel
+             */
+            $postModel = $this->getModel();
 
-                $title = trim($this->getRequest()["editTitle"]);
-                $body = trim($this->getRequest()["editBody"]);
-                $tags = explode(", ", $this->getRequest()["editTags"]);
-                $postId = filter_var($this->getRequest()["postId"], FILTER_VALIDATE_INT);
+            $title = trim($this->getRequest()["editTitle"]);
+            $body = trim($this->getRequest()["editBody"]);
+            $postId = filter_var($this->getRequest()["postId"], FILTER_VALIDATE_INT);
 
-                if ($postId === false || !$postModel->postExists($postId)) {
-                    $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
-                    $this->redirect("posts", "all");
-                }
+            if ($postId === false || !$postModel->postExists($postId)) {
+                $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
+                $this->redirect("posts", "all");
+            }
 
-                if (strlen($title) <= 0) {
-                    $this->getSession()->addMessage("Title can not be empty!", Messages::DANGER);
-                }
+            if (strlen($title) <= 0) {
+                $this->getSession()->addMessage("Title can not be empty!", Messages::DANGER);
+            }
 
-                if (strlen($body) <= 0) {
-                    $this->getSession()->addMessage("Description can not be empty!", Messages::DANGER);
-                }
+            if (strlen($body) <= 0) {
+                $this->getSession()->addMessage("Description can not be empty!", Messages::DANGER);
+            }
 
-                if ($this->getSession()->getMessagesCount(Messages::DANGER) > 0) {
-                    $this->redirect("posts", "edit");
-                }
+            if ($this->getSession()->getMessagesCount(Messages::DANGER) > 0) {
+                $this->redirect("posts", "edit", [$postId]);
+            }
 
-                if ($postModel->editPost($title, $body, $postId)) {
-                    $post = $postModel->getPostById($postId);
-                    $post->setTags($tags);
-
-                    $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
-                    $this->redirect("posts", "edit", [$postId]);
-                } else {
-                    $this->getSession()->addMessage("There was a problem editing the post!", Messages::DANGER);
-                    $this->redirect("posts", "edit", [$postId]);
-                }
+            if ($postModel->editPost($title, $body, $postId)) {
+                $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
+                $this->redirect("posts", "edit", [$postId]);
+            } else {
+                $this->getSession()->addMessage("There was a problem editing the post!", Messages::DANGER);
+                $this->redirect("posts", "edit", [$postId]);
             }
         }
 
