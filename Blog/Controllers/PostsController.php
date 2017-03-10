@@ -58,7 +58,8 @@ class PostsController extends Controller
             $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
-        if(isset($_POST['createPost'])) {
+
+        if (isset($_POST['createPost'])) {
             /**
              * @var PostsModel $postModel
              */
@@ -82,22 +83,24 @@ class PostsController extends Controller
             if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
                 if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
                     $postId = $postModel->getLastPostId();
-                    foreach ($tags as $tag){
-                        $postModel->addTag($postId,$tag);
+                    foreach ($tags as $tag) {
+                        $postModel->addTag($postId, $tag);
                     }
                     $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
                     $this->redirect("posts", "all");
-                }else{
+                } else {
                     $this->getSession()->addMessage("There was a problem creating the post!", Messages::DANGER);
                     $this->redirect("posts", "add");
                 }
             }
         }
-        if(isset($_POST['cancelAdding'])) {
+
+        if (isset($_POST['cancelAdding'])) {
             $this->getSession()->addMessage("You cancelled adding a post!", Messages::INFO);
             $this->redirect("posts", "all");
         }
-        $this->renderView("posts/all");
+
+        $this->renderView("posts/add");
 
     }
 
@@ -115,13 +118,18 @@ class PostsController extends Controller
 
     public function edit($postIdStr)
     {
-      if (!$this->isAdmin()) {
+        if (!$this->isAdmin()) {
             $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
 
         if ($this->isPost()) {
-            if(isset($_POST['editPost'])) {
+            if (isset($_POST['cancelEditing'])) {
+                $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
+                $this->redirect("posts", "all");
+            }
+
+            if (isset($_POST['editPost'])) {
                 /**
                  * @var PostsModel $postModel
                  */
@@ -129,40 +137,43 @@ class PostsController extends Controller
 
                 $title = trim($this->getRequest()["editTitle"]);
                 $body = trim($this->getRequest()["editBody"]);
-                $tags = explode(',', $this->getRequest()["editTags"]);
+                $tags = explode(", ", $this->getRequest()["editTags"]);
+                $postId = filter_var($this->getRequest()["postId"], FILTER_VALIDATE_INT);
+
+                if ($postId === false || !$postModel->postExists($postId)) {
+                    $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
+                    $this->redirect("posts", "all");
+                }
 
                 if (strlen($title) <= 0) {
-                    $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
+                    $this->getSession()->addMessage("Title can not be empty!", Messages::DANGER);
                 }
 
                 if (strlen($body) <= 0) {
-                    $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
+                    $this->getSession()->addMessage("Description can not be empty!", Messages::DANGER);
                 }
 
-                if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
-                    $postId = intval($this->getRequest()["postId"]);
-                    if ($postModel->editPost($title, $body, $postId)) {
-                        $post = $postModel->getPostById($postId);
-                        $post->setTags($tags);
-                        var_dump($post);
-                        $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
-                        $this->redirect("posts", "all");
-                    }else{
-                        $this->getSession()->addMessage("There was a problem editing the post!", Messages::DANGER);
-                        $this->redirect("posts", "edit");
-                    }
+                if ($this->getSession()->getMessagesCount(Messages::DANGER) > 0) {
+                    $this->redirect("posts", "edit");
                 }
-            }
 
-            if(isset($_POST['cancelEditing'])) {
-                $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
-                $this->redirect("posts", "all");
+                if ($postModel->editPost($title, $body, $postId)) {
+                    $post = $postModel->getPostById($postId);
+                    $post->setTags($tags);
+
+                    $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
+                    $this->redirect("posts", "edit", [$postId]);
+                } else {
+                    $this->getSession()->addMessage("There was a problem editing the post!", Messages::DANGER);
+                    $this->redirect("posts", "edit", [$postId]);
+                }
             }
         }
 
-        $postId = null;
-        if(!filter_var($postIdStr,FILTER_VALIDATE_INT)){
-            $postId = intval($postIdStr[0]);
+        $postId = filter_var($postIdStr[0], FILTER_VALIDATE_INT);
+        if ($postId === false) {
+            $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
+            $this->redirect("posts", "all");
         }
 
         /**

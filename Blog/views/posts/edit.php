@@ -16,13 +16,13 @@
             <div class="form-group">
                 <label for="postBody" class="col-lg-2 control-label">Body</label>
                 <div class="col-lg-10">
-                    <textarea class="form-control" rows="5" name="editBody" id="editBody" data-gramm="true" data-txt_gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" data-gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 21.4286px; font-size: 15px; transition: none; background: transparent !important; resize: none"><?= $post->getBody(); ?></textarea>
+                    <textarea class="form-control" rows="5" name="editBody" id="editBody"><?= $post->getBody(); ?></textarea>
                 </div>
             </div>
             <div class="form-group">
-                <label for="tags" class="col-lg-2 control-label">Tags</label>
+                <label for="tags" class="col-lg-2 control-label">Tags <span class="text-muted">/readonly/</span></label>
                 <div class="col-lg-10">
-                    <textarea class="form-control" rows="2" name="editTags" id="editTags" data-gramm="true" data-txt_gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" data-gramm_id="9e48ac4c-c047-baf8-838a-2751c15854ee" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 21.4286px; font-size: 15px; transition: none; background: transparent !important; resize: none"><?= implode(",", array_map("renderInView", $post->getTags())); ?></textarea>
+                    <textarea readonly="readonly" class="form-control" rows="1" name="editTags" id="editTags"><?= implode(",", array_map("renderInView", $post->getTags())); ?></textarea>
                 </div>
             </div>
             <hr>

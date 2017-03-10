@@ -91,12 +91,19 @@ class PostsModel extends Model
          * @var $post PostEntity
          */
         $post = $stmt->fetchObj(PostEntity::class);
-        echo (gettype($post));// eto tyk vrushta bool i za tova gurmi
         return $post;
     }
 
     public function getLastPostId() : int {
         $stmt = $this->getDb()->getLastId();
         return $stmt;
+    }
+
+    public function postExists(int $postId)
+    {
+        $stmt = $this->getDb()->prepare("SELECT id FROM posts WHERE id = ?");
+        $stmt->execute([$postId]);
+
+        return $stmt->fetchRow() != null;
     }
 }
