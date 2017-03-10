@@ -34,7 +34,7 @@
                                 <?php if ($user->getTemplateFile() === $template->getCssFile()) : ; ?>
                                     <?= " selected='true'"; ?>
                                 <?php endif; ?>>
-                                <?= $template->getName(); ?>
+                                <?= ucfirst($template->getName()); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

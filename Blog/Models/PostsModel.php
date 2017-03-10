@@ -29,6 +29,7 @@ class PostsModel extends Model
                                         FROM posts
                                         INNER JOIN users
                                         ON users.id = posts.authorId
+                                        WHERE posts.deletedOn IS NULL
                                         ORDER BY createdOn DESC {$limit}");
 
         $stmt->execute();
