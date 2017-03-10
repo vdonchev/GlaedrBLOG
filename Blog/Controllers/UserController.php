@@ -40,12 +40,12 @@ class UserController extends Controller
 
             if ($user == null || !password_verify($password, $user->getPassword())) {
                 $this->getSession()->addMessage("Username or password is incorrect.", Messages::DANGER);
+
             } else {
                 $this->getSession()->setProperty(Config::USER_ID, $user->getId());
                 if ($user->getRoleId() === 1) {
                     $this->getSession()->setProperty(Config::USER_ADMIN, true);
                 }
-
                 $this->getSession()->addMessage("You are logged in! Welcome!", Messages::SUCCESS);
                 $this->redirect("user", "profile");
             }

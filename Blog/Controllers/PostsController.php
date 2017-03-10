@@ -7,6 +7,7 @@ namespace Blog\Controllers;
 use Blog\Models\PostsModel;
 use Framework\Controllers\Controller;
 use Framework\Core\Config;
+use Framework\Core\Utilities\Messages;
 
 class PostsController extends Controller
 {
@@ -53,8 +54,43 @@ class PostsController extends Controller
 
     public function add()
     {
-        echo "Posts controller - add action";
-        // TODO
+        if (!$this->isAuthorized()) {
+            $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+        if(isset($_POST['createPost'])) {
+            /**
+             * @var PostsModel $postModel
+             */
+            $postModel = $this->getModel();
+
+            $authorId = $this->getSession()->getProperty("userId");
+            $title = trim($this->getRequest()["postTitle"]);
+            $body = $this->getRequest()["postBody"];
+            $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
+            $updatedOn = $createdOn;
+
+            if (strlen($title) < 1) {
+                $this->getSession()->addMessage("Title should be at least 1 characters long.", Messages::DANGER);
+            }
+
+            if (strlen($body) < 0) {
+                $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
+            }
+
+            if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
+                if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
+                    $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
+                    $this->redirect("posts", "all");
+                }else{
+                    $this->getSession()->addMessage("There was a problem creating the post!", Messages::DANGER);
+                    echo $authorId;
+                   // $this->redirect("posts", "all");
+                }
+            }
+        }
+            $this->renderView("posts/add");
+
     }
 
     public function view($postId)
