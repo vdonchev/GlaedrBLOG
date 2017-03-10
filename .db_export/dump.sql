@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `authorId` int(10) unsigned DEFAULT NULL,
   `postId` int(10) unsigned NOT NULL,
   `body` text NOT NULL,
-  `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deletedOn` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `createdOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedOn` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_comments_users` (`authorId`),
   KEY `FK_comments_posts` (`postId`),
@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `authorId` int(10) unsigned NOT NULL,
   `title` varchar(255) NOT NULL,
   `body` text NOT NULL,
-  `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deletedOn` timestamp NULL DEFAULT NULL,
+  `createdOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deletedOn` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK__users` (`authorId`),
   CONSTRAINT `FK__users` FOREIGN KEY (`authorId`) REFERENCES `users` (`id`)
@@ -102,22 +102,23 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) NOT NULL DEFAULT '0',
   `password` varchar(255) NOT NULL DEFAULT '0',
   `roleId` int(11) unsigned NOT NULL,
-  `template_id` int(11) unsigned NOT NULL DEFAULT '1',
-  `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `templateId` int(11) unsigned NOT NULL DEFAULT '1',
+  `createdOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `FK_users_user_roles` (`roleId`),
-  KEY `FK_users_templates` (`template_id`),
-  CONSTRAINT `FK_users_templates` FOREIGN KEY (`template_id`) REFERENCES `templates` (`id`),
+  KEY `FK_users_templates` (`templateId`),
+  CONSTRAINT `FK_users_templates` FOREIGN KEY (`templateId`) REFERENCES `templates` (`id`),
   CONSTRAINT `FK_users_user_roles` FOREIGN KEY (`roleId`) REFERENCES `user_roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `username`, `password`, `roleId`, `template_id`, `createdOn`, `updatedOn`) VALUES
-	(9, 'videlin', '$2y$10$rp7f6rWK3OBYKxER32QIyO.qruIgQjW/mK/tF1gA7WYOnd3wCd2XG', 2, 1, '2017-03-05 19:47:53', '2017-03-10 09:46:44'),
-	(10, 'admin', '$2y$10$tViY3e4wQxfYAopgiAjcM.uxFKd42LVqWPabp7zfoADIKXzzOWzHK', 1, 2, '2017-03-06 11:55:20', '2017-03-10 10:39:04');
+INSERT INTO `users` (`id`, `username`, `password`, `roleId`, `templateId`, `createdOn`, `updatedOn`) VALUES
+	(9, 'videlin', '$2y$10$rp7f6rWK3OBYKxER32QIyO.qruIgQjW/mK/tF1gA7WYOnd3wCd2XG', 2, 1, '2017-03-05 19:47:53', '2017-03-10 10:45:04'),
+	(10, 'admin', '$2y$10$tViY3e4wQxfYAopgiAjcM.uxFKd42LVqWPabp7zfoADIKXzzOWzHK', 1, 2, '2017-03-06 11:55:20', '2017-03-10 11:41:46'),
+	(11, 'test', '$2y$10$qxk4Mhc535BFFQFhE8VjnONH17gyXwF9pQpTQqShXixShqTgBXNn.', 2, 2, '2017-03-10 10:45:20', '2017-03-10 10:57:27');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `user_roles` (
