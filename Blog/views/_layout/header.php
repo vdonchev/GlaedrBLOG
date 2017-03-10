@@ -3,7 +3,7 @@
 <head>
     <!--  CSS  -->
     <?php if (!$this->isAuthorized()) : ?>
-        <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>styles/default.min.css">
+        <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>styles/blue.min.css">
     <?php else : ?>
         <link rel="stylesheet" href="<?= \Framework\Core\Config::PUBLIC; ?>styles/<?= $this->getTemplate(); ?>">
     <?php endif; ?>
