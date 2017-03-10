@@ -123,16 +123,16 @@ class PostsController extends Controller
             $this->redirect("posts", "all");
         }
 
+        /**
+         * @var PostsModel $postModel
+         */
+        $postModel = $this->getModel();
+
         if ($this->isPost()) {
             if (isset($_POST['cancelEditing'])) {
                 $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
                 $this->redirect("posts", "all");
             }
-
-            /**
-             * @var PostsModel $postModel
-             */
-            $postModel = $this->getModel();
 
             $title = trim($this->getRequest()["editTitle"]);
             $body = trim($this->getRequest()["editBody"]);
@@ -165,7 +165,7 @@ class PostsController extends Controller
         }
 
         $postId = filter_var($postIdStr[0], FILTER_VALIDATE_INT);
-        if ($postId === false) {
+        if ($postId === false || !$postModel->postExists($postId)) {
             $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
