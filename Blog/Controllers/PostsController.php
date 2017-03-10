@@ -3,7 +3,6 @@
 
 namespace Blog\Controllers;
 
-
 use Blog\Models\Entities\PostEntity;
 use Blog\Models\PostsModel;
 use Framework\Controllers\Controller;
@@ -70,7 +69,7 @@ class PostsController extends Controller
             $body = trim($this->getRequest()["postBody"]);
             $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
             $updatedOn = $createdOn;
-            $tags = array_filter(array_map("trim", explode(",", $this->getRequest()["tags"])));
+            $tags = array_unique(array_filter(array_map("trim", explode(",", $this->getRequest()["tags"]))));
 
             if (strlen($title) <= 0) {
                 $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
@@ -98,7 +97,7 @@ class PostsController extends Controller
             $this->getSession()->addMessage("You cancelled adding a post!", Messages::INFO);
             $this->redirect("posts", "all");
         }
-        $this->renderView("posts/add");
+        $this->renderView("posts/all");
 
     }
 
@@ -114,51 +113,68 @@ class PostsController extends Controller
         // TODO
     }
 
-    public function edit($postId)
+    public function edit($postIdStr)
     {
-        if (!$this->isAdmin()) {
+      if (!$this->isAdmin()) {
             $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
-        if(isset($_POST['editPost'])) {
-            /**
-             * @var PostsModel $postModel
-             */
-            $postModel = $this->getModel();
 
-            $authorId = $this->getSession()->getProperty("userId");
-            $title = trim($this->getRequest()["postTitle"]);
-            $body = trim($this->getRequest()["postBody"]);
-            $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
-            $updatedOn = $createdOn;
-            $tags = array_filter(array_map("trim", explode(",", $this->getRequest()["tags"])));
+        if ($this->isPost()) {
+            if(isset($_POST['editPost'])) {
+                /**
+                 * @var PostsModel $postModel
+                 */
+                $postModel = $this->getModel();
 
-            if (strlen($title) <= 0) {
-                $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
-            }
+                $title = trim($this->getRequest()["editTitle"]);
+                $body = trim($this->getRequest()["editBody"]);
+                $tags = explode(',', $this->getRequest()["editTags"]);
 
-            if (strlen($body) <= 0) {
-                $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
-            }
+                if (strlen($title) <= 0) {
+                    $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
+                }
 
-            if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
-                if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
-                    $postId = $postModel->getLastPostId();
-                    foreach ($tags as $tag){
-                        $postModel->addTag($postId,$tag);
+                if (strlen($body) <= 0) {
+                    $this->getSession()->addMessage("The description can not be empty!", Messages::DANGER);
+                }
+
+                if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
+                    $postId = intval($this->getRequest()["postId"]);
+                    if ($postModel->editPost($title, $body, $postId)) {
+                        $post = $postModel->getPostById($postId);
+                        $post->setTags($tags);
+                        var_dump($post);
+                        $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
+                        $this->redirect("posts", "all");
+                    }else{
+                        $this->getSession()->addMessage("There was a problem editing the post!", Messages::DANGER);
+                        $this->redirect("posts", "edit");
                     }
-                    $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
-                    $this->redirect("posts", "all");
-                }else{
-                    $this->getSession()->addMessage("There was a problem creating the post!", Messages::DANGER);
-                    $this->redirect("posts", "edit");
                 }
             }
+
+            if(isset($_POST['cancelEditing'])) {
+                $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
+                $this->redirect("posts", "all");
+            }
         }
-        if(isset($_POST['cancelEditing'])) {
-            $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
-            $this->redirect("posts", "all");
+
+        $postId = null;
+        if(!filter_var($postIdStr,FILTER_VALIDATE_INT)){
+            $postId = intval($postIdStr[0]);
         }
+
+        /**
+         * @var $model PostsModel
+         */
+        $model = $this->getModel();
+        $post = $model->getPostById($postId);
+
+        $tags = $model->getPostTags($postId);
+        $post->setTags($tags);
+        $this->addData("post", $post);
+
         $this->renderView("posts/edit");
     }
 
