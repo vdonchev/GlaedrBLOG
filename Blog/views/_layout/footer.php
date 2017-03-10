@@ -6,6 +6,9 @@
                     <div class="col-md-9">
                         <span><strong>Glaedr Blog</strong> application &copy; <?= (new DateTime())->format("Y") ?> @softuni.bg</span>
                         <div>Powered by PHP + MySQL on Apache</div>
+                        <div>
+                            <a href="https://github.com/vdonchev/GlaedrBLOG" target="_blank">@github</a>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <div class="text-right">
