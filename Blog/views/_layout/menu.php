@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="<?=\Framework\Core\Config::APP_ROOT;?>/home" class="navbar-brand">
+            <a href="<?=\Framework\Core\Config::APP_ROOT;?>/posts" class="navbar-brand">
                 <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Gleadr Blog
             </a>
         </div>

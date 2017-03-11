@@ -25,7 +25,8 @@ class PostsModel extends Model
                                             users.username as author,
                                             posts.title,
                                             posts.body,
-                                            posts.createdOn
+                                            posts.createdOn,
+                                            posts.updatedOn
                                         FROM posts
                                         INNER JOIN users
                                         ON users.id = posts.authorId

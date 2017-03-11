@@ -11,6 +11,8 @@ class PostEntity
     private $title;
     private $body;
     private $createdOn;
+    private $updatedOn;
+
     private $tags = [];
 
     public function getId(): int
@@ -46,5 +48,15 @@ class PostEntity
     public function setTags(array $tags)
     {
         $this->tags = $tags;
+    }
+
+    public function getUpdatedOn()
+    {
+        return $this->updatedOn;
+    }
+
+    public function setUpdatedOn($updatedOn)
+    {
+        $this->updatedOn = $updatedOn;
     }
 }

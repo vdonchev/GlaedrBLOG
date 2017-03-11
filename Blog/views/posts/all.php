@@ -33,6 +33,11 @@
                                     <li>Author: <strong><?= renderInView($post->getAuthor()); ?></strong></li>
                                 </ul>
 
+                                <?php if ($post->getCreatedOn() !== $post->getUpdatedOn()): ;?>
+                                    <ul class="post-meta list-unstyled list-inline">
+                                        <li class="text-muted"><em>Updated on: <?= $post->getUpdatedOn(); ?></em></li>
+                                    </ul>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
