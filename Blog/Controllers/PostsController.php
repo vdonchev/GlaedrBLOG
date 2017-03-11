@@ -130,10 +130,10 @@ class PostsController extends Controller
     }
 
     public function edit($postIdStr)
-    {
+        {
         if (!$this->isAdmin()) {
-            $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
-            $this->redirect("posts", "all");
+        $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
+        $this->redirect("posts", "all");
         }
 
         /**
@@ -198,7 +198,32 @@ class PostsController extends Controller
 
     public function del($postId)
     {
-        echo "Posts controller - del action";
-        // TODO
+        /**
+         * @var $model PostsModel
+         */
+        $model = $this->getModel();
+
+        $postId = $postId[0];
+        $postId = filter_var($postId, FILTER_VALIDATE_INT);
+        if (!$this->isAdmin()) {
+            $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+        if ($postId === false) {
+            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+        if ($model->deletePost($postId)) {
+            $this->getSession()->addMessage("The post was deleted!", Messages::SUCCESS);
+            $this->redirect("posts", "all");
+        } else {
+            $this->getSession()->addMessage("There was a problem deleting the post!", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+        if (!$model->postExists($postId)) {
+            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+
     }
 }
