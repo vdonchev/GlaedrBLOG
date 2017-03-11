@@ -63,6 +63,10 @@ class PostEntity
 
     public function getCommentsCount()
     {
+        if ($this->commentsCount === null) {
+            return count($this->getComments());
+        }
+
         return $this->commentsCount;
     }
 

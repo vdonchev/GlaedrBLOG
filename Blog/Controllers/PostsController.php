@@ -104,10 +104,29 @@ class PostsController extends Controller
 
     }
 
-    public function view($postId)
+    public function view($id)
     {
-        echo "Posts controller - view action";
-        // TODO
+        /**
+         * @var $model PostsModel
+         */
+        $model = $this->getModel();
+
+        $id = $id[0];
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if ($id === false) {
+            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+
+        if (!$model->postExists($id)) {
+            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
+
+        $post = $model->getPostWithCommentsById($id);
+
+        $this->addData("post", $post);
+        $this->renderView("posts/single");
     }
 
     public function edit($postIdStr)
