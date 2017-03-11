@@ -14,6 +14,11 @@ class PostEntity
     private $updatedOn;
     private $commentsCount;
 
+    /**
+     * @var CommentEntity[]
+     */
+    private $comments = [];
+
     private $tags = [];
 
     public function getId(): int
@@ -56,13 +61,18 @@ class PostEntity
         return $this->updatedOn;
     }
 
-    public function setUpdatedOn($updatedOn)
-    {
-        $this->updatedOn = $updatedOn;
-    }
-
     public function getCommentsCount()
     {
         return $this->commentsCount;
+    }
+
+    public function getComments(): array
+    {
+        return $this->comments;
+    }
+
+    public function setComments(array $comments)
+    {
+        $this->comments = $comments;
     }
 }
