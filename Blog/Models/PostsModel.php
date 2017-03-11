@@ -69,7 +69,7 @@ class PostsModel extends Model
         $stmt = $this->getDb()->prepare("UPDATE posts SET title = ?, body = ? WHERE id = ?");
         return $stmt->execute([$title, $body, $postId]);
     }
-    public function deletePost(int $postId)
+    public function deletePost(int $postId) :bool
     {
         $stmt = $this->getDb()->prepare("UPDATE posts SET deletedOn = NOW() WHERE id = ?");
         return $stmt->execute([$postId]);

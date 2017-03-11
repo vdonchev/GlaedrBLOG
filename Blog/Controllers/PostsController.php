@@ -213,6 +213,10 @@ class PostsController extends Controller
             $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
             $this->redirect("posts", "all");
         }
+        if (!$model->postExists($postId)) {
+            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
+            $this->redirect("posts", "all");
+        }
         if ($model->deletePost($postId)) {
             $this->getSession()->addMessage("The post was deleted!", Messages::SUCCESS);
             $this->redirect("posts", "all");
@@ -220,10 +224,7 @@ class PostsController extends Controller
             $this->getSession()->addMessage("There was a problem deleting the post!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
-        if (!$model->postExists($postId)) {
-            $this->getSession()->addMessage("Invalid post id.", Messages::DANGER);
-            $this->redirect("posts", "all");
-        }
+
 
     }
 }
