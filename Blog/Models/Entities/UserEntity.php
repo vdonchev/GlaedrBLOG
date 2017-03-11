@@ -9,6 +9,8 @@ class UserEntity
     private $id;
     private $username;
     private $password;
+    private $name;
+    private $email;
     private $roleId;
     private $role;
     private $templateName;
@@ -54,5 +56,20 @@ class UserEntity
     public function getTemplateFile()
     {
         return $this->templateFile;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function getTemplateName()
+    {
+        return $this->templateName;
     }
 }

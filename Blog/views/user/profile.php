@@ -15,6 +15,14 @@
             <td><strong><?= renderInView($user->getUsername()) ?></strong></td>
         </tr>
         <tr>
+            <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Name</td>
+            <td><strong><?= renderInView($user->getName()) ?></strong></td>
+        </tr>
+        <tr>
+            <td><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Email</td>
+            <td><strong><?= renderInView($user->getEmail()) ?></strong></td>
+        </tr>
+        <tr>
             <td><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Role</td>
             <td><strong><?= renderInView(ucfirst($user->getRole())) ?></strong></td>
         </tr>

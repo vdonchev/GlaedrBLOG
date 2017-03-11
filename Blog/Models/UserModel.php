@@ -10,10 +10,10 @@ use Framework\Models\Model;
 
 class UserModel extends Model
 {
-    public function register(string $username, string $password, int $roleId = 2): bool
+    public function register(string $username, string $password, string $name, string $email): bool
     {
-        $stmt = $this->getDb()->prepare("INSERT INTO users (username, password, roleId) VALUES (?, ?, ?)");
-        return $stmt->execute([$username, $password, $roleId]);
+        $stmt = $this->getDb()->prepare("INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$username, $password, $name, $email]);
     }
 
     public function userExists(string $username): bool

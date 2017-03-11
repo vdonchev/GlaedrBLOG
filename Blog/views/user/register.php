@@ -26,6 +26,23 @@
                            autocomplete="off">
                 </div>
             </div>
+            <hr>
+            <div class="form-group danger">
+                <label for="name" class="col-lg-2 control-label">Name
+                </label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                           autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group danger">
+                <label for="name" class="col-lg-2 control-label">Email
+                </label>
+                <div class="col-lg-10">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           autocomplete="off">
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-2">
                     <button type="reset" class="btn btn-default">Cancel</button>

@@ -70,6 +70,8 @@ class UserController extends Controller
             $username = trim($this->getRequest()["username"]);
             $password = $this->getRequest()["password"];
             $passwordRepeat = $this->getRequest()["password-repeat"];
+            $name = trim($this->getRequest()["name"]);
+            $email = trim($this->getRequest()["email"]);
 
             if (strlen($username) < 3) {
                 $this->getSession()->addMessage("Username should be at least 3 characters long.", Messages::DANGER);
@@ -87,9 +89,22 @@ class UserController extends Controller
                 $this->getSession()->addMessage("Passwords does not match.", Messages::DANGER);
             }
 
+            if (empty($name)) {
+                $this->getSession()->addMessage("Name cannot be empty.", Messages::DANGER);
+            }
+
+            if (empty($email)) {
+                $this->getSession()->addMessage("Email cannot be empty.", Messages::DANGER);
+            }
+
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+            if ($email === false) {
+                $this->getSession()->addMessage("Email is not valid.", Messages::DANGER);
+            }
+
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
-                if ($model->register($username, $hashedPassword)) {
+                if ($model->register($username, $hashedPassword, $name, $email)) {
                     $this->getSession()->addMessage("Registration successful", Messages::SUCCESS);
                     $this->redirect("user", "login");
                 }

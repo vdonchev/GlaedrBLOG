@@ -35,6 +35,8 @@ abstract class Model implements ModelInterface
                                             users.id,
                                             users.username,
                                             users.`password`,
+                                            users.name,
+                                            users.email,
                                             users.roleId,	
                                             user_roles.name AS role,
                                             templates.name AS templateName,
