@@ -13,6 +13,7 @@
     <!--  JS  -->
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>js/jquery-3.1.1.min.js"></script>
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>js/bootstrap.min.js"></script>
+    <script src="<?= \Framework\Core\Config::PUBLIC; ?>js/bootbox.min.js"></script>
     <script src="<?= \Framework\Core\Config::PUBLIC; ?>js/scripts.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport"

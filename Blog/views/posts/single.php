@@ -45,7 +45,7 @@
                            href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
                         </a>
-                        <a class="btn btn-danger btn-sm"
+                        <a class="btn btn-danger btn-sm delete-post"
                            href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             Delete
