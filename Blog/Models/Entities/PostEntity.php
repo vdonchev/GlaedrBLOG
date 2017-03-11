@@ -12,6 +12,7 @@ class PostEntity
     private $body;
     private $createdOn;
     private $updatedOn;
+    private $commentsCount;
 
     private $tags = [];
 
@@ -58,5 +59,10 @@ class PostEntity
     public function setUpdatedOn($updatedOn)
     {
         $this->updatedOn = $updatedOn;
+    }
+
+    public function getCommentsCount()
+    {
+        return $this->commentsCount;
     }
 }

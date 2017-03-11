@@ -15,13 +15,27 @@
                 <p class="post-content">
                     <?= renderInView($post->getBody()); ?>
                 </p>
-                <?php if (count($post->getTags()) > 0) :; ?>
-                    <hr>
-                    <div class="h4">
-                        Tags:
-                        <span class="label label-primary"><?php echo implode("</span> <span class='label label-primary'>", array_map("renderInView", $post->getTags())); ?></span>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php if (count($post->getTags()) > 0) :; ?>
+                            <div class="h4">
+                                Tags:
+                                <span class="label label-primary"><?php echo implode("</span> <span class='label label-primary'>", array_map("renderInView", $post->getTags())); ?></span>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                    <div class="col-md-6 text-right">
+                        <div class="h5">
+                            Comments: <?= $post->getCommentsCount(); ?>&nbsp;
+                            <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/comments/add/<?= $post->getId(); ?>">
+                                <span>
+                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
                 <div class="row">

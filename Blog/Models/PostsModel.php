@@ -21,15 +21,18 @@ class PostsModel extends Model
         $limit = "LIMIT {$from},{$numOfPosts}";
 
         $stmt = $this->getDb()->prepare("SELECT 
-                                            posts.id,
-                                            users.username as author,
-                                            posts.title,
-                                            posts.body,
-                                            posts.createdOn,
-                                            posts.updatedOn
-                                        FROM posts
+                                             posts.id,
+                                             users.username as author,
+                                             posts.title,
+                                             posts.body,
+                                             posts.createdOn,
+                                             posts.updatedOn,
+                                             (SELECT COUNT(comments.id) 
+                                              FROM comments 
+                                              WHERE comments.postId = posts.id) as commentsCount
+                                        FROM posts 
                                         INNER JOIN users
-                                        ON users.id = posts.authorId
+                                            ON users.id = posts.authorId
                                         WHERE posts.deletedOn IS NULL
                                         ORDER BY createdOn DESC {$limit}");
 
@@ -67,11 +70,11 @@ class PostsModel extends Model
         return $tags;
     }
 
-    public function addPost(int $authorId,string $title,string $body,string $createdOn,string $updatedOn)
-{
-    $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body, createdOn, updatedOn) VALUES (?, ?, ?, ?, ?)");
-    return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
-}
+    public function addPost(int $authorId, string $title, string $body, string $createdOn, string $updatedOn)
+    {
+        $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body, createdOn, updatedOn) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
+    }
 
     public function editPost(string $title, string $body, int $postId)
     {
@@ -79,23 +82,41 @@ class PostsModel extends Model
         return $stmt->execute([$title, $body, $postId]);
     }
 
-    public function addTag(int $postId, string $tagName){
+    public function addTag(int $postId, string $tagName)
+    {
         $stmt = $this->getDb()->prepare("INSERT INTO post_tags (postId, name) VALUES (?, ?)");
         return $stmt->execute([$postId, $tagName]);
     }
 
-    public function getPostById(int $id) : PostEntity{
-        $stmt = $this->getDb()->prepare("SELECT * FROM posts WHERE id = ?");
+    public function getPostById(int $id): PostEntity
+    {
+        $stmt = $this->getDb()->prepare("SELECT 
+                                             posts.id,
+                                             users.username AS author,
+                                             posts.title,
+                                             posts.body,
+                                             posts.createdOn,
+                                             posts.updatedOn,
+                                             (SELECT COUNT(comments.id) 
+                                              FROM comments 
+                                              WHERE comments.postId = posts.id) as commentsCount
+                                        FROM posts 
+                                        INNER JOIN users
+                                            ON users.id = posts.authorId
+                                        WHERE posts.deletedOn IS NULL
+                                        AND posts.id = ?");
         $stmt->execute([$id]);
 
         /**
          * @var $post PostEntity
          */
         $post = $stmt->fetchObj(PostEntity::class);
+
         return $post;
     }
 
-    public function getLastPostId() : int {
+    public function getLastPostId(): int
+    {
         $stmt = $this->getDb()->getLastId();
         return $stmt;
     }

@@ -110,12 +110,6 @@ class PostsController extends Controller
         // TODO
     }
 
-    public function comment($postId)
-    {
-        echo "Posts controller - comment action";
-        // TODO
-    }
-
     public function edit($postIdStr)
     {
         if (!$this->isAdmin()) {
