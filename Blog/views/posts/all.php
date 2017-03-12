@@ -16,30 +16,26 @@
                     <?= renderInView($post->getBody()); ?>
                 </p>
                 <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <?php if (count($post->getTags()) > 0) :; ?>
-                            <div class="h4">
-                                Tags:
-                                <?php foreach ($post->getTags() as $tag): ; ?>
-                                    <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/search/tag/<?= urlencode($tag); ?>">
-                            <span class="label label-primary">
-                                <?= renderInView($tag); ?>
-                            </span>
-                                    </a>&nbsp;
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <div class="h5">
-                            Comments: <?= $post->getCommentsCount(); ?>&nbsp;
-                            <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/comments/add/<?= $post->getId(); ?>">
+                <div>
+                    <?php if (count($post->getTags()) > 0) :; ?>
+                        <div class="h4">
+                            Tags:
+                            <?php foreach ($post->getTags() as $tag): ; ?>
+                                <span class="label label-primary">
+                                        <a class="post-tag" href="<?= \Framework\Core\Config::APP_ROOT; ?>/search/tag/<?= urlencode($tag); ?>"><?= renderInView($tag); ?></a>
+                                    </span>&nbsp;
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="text-right">
+                    <div class="h5">
+                        Comments: <?= $post->getCommentsCount(); ?>&nbsp;
+                        <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/comments/add/<?= $post->getId(); ?>">
                                 <span>
                                     <span class="glyphicon glyphicon-plus-sign text-success" aria-hidden="true"></span>
                                 </span>
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

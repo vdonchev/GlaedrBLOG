@@ -33,10 +33,15 @@ class UserController extends Controller
             $username = trim($this->getRequest()["username"]);
             $password = $this->getRequest()["password"];
 
+            if (!$model->userExistsByName($username)) {
+                $this->getSession()->addMessage("Username or password is incorrect.", Messages::DANGER);
+                $this->renderView("user/login");
+            }
+
             /**
              * @var UserEntity $user
              */
-            $user = $model->getUser($username);
+            $user = $model->getUserByName($username);
 
             if ($user == null || !password_verify($password, $user->getPassword())) {
                 $this->getSession()->addMessage("Username or password is incorrect.", Messages::DANGER);
@@ -77,7 +82,7 @@ class UserController extends Controller
                 $this->getSession()->addMessage("Username should be at least 3 characters long.", Messages::DANGER);
             }
 
-            if ($model->userExists($username)) {
+            if ($model->userExistsByName($username)) {
                 $this->getSession()->addMessage("Username already exists.", Messages::DANGER);
             }
 
@@ -128,7 +133,7 @@ class UserController extends Controller
         $user = $model->getUserById($this->getSession()->getProperty(Config::USER_ID));
         $this->addData("user", $user);
 
-        $templates = $model->getAllTemplates();
+        $templates = $this->getAppModel()->getAllTemplates();
         $this->addData("templates", $templates);
 
         $this->renderView("user/profile");
@@ -158,12 +163,7 @@ class UserController extends Controller
         }
 
         $userId = $this->getSession()->getProperty(Config::USER_ID);
-
-        /**
-         * @var $model UserModel
-         */
-        $model = $this->getModel();
-        if ($model->setTemplate($templateId, $userId)) {
+        if ($this->getAppModel()->setTemplate($templateId, $userId)) {
             $this->getSession()->addMessage("Template changed successfully", Messages::SUCCESS);
             $this->redirect("user", "profile");
         }

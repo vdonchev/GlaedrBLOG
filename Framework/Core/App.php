@@ -4,6 +4,7 @@
 namespace Framework\Core;
 
 
+use Blog\Models\AppModel;
 use Framework\Core\Database\DatabaseInterface;
 use Framework\Core\Session\SessionInterface;
 use Framework\Core\Utilities\Constants;
@@ -17,13 +18,16 @@ class App implements AppInterface
 
     private $database;
     private $session;
+    private $appModel;
 
     public function __construct(
         DatabaseInterface $database,
-        SessionInterface $session)
+        SessionInterface $session,
+        AppModel $appModel)
     {
         $this->database = $database;
         $this->session = $session;
+        $this->appModel = $appModel;
     }
 
     public function start(string $url)
@@ -74,7 +78,7 @@ class App implements AppInterface
             throw new \Exception(Constants::INVALID_CONTROLLER);
         }
 
-        $this->controller = new $controllerClass($this->session, $model);
+        $this->controller = new $controllerClass($this->session, $this->appModel, $model);
 
         call_user_func([$this->controller, $this->action], $this->parameters);
     }

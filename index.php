@@ -1,6 +1,9 @@
 <?php
 declare(strict_types = 1);
 
+use Blog\Models\AppModel;
+use Blog\Models\PostsModel;
+use Blog\Models\UserModel;
 use Framework\Core\App;
 use Framework\Core\Config;
 use Framework\Core\Database\PDODatabase;
@@ -24,5 +27,10 @@ spl_autoload_register(function ($class) {
 $database = new PDODatabase(Config::DB_HOST, Config::DB_NAME, Config::DB_USER, Config::DB_PASS);
 $session = new Session($_SESSION);
 
-$app = new App($database, $session);
+$userModel = new UserModel($database);
+$postsModel = new PostsModel($database);
+
+$appModel = new AppModel($database, $userModel, $postsModel);
+
+$app = new App($database, $session, $appModel);
 $app->start($_SERVER["REQUEST_URI"]);

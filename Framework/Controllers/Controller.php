@@ -4,10 +4,10 @@
 namespace Framework\Controllers;
 
 
+use Blog\Models\AppModel;
 use Framework\Core\Config;
 use Framework\Core\Session\SessionInterface;
 use Framework\Core\Utilities\Constants;
-use Framework\Models\Model;
 use Framework\Models\ModelInterface;
 
 abstract class Controller implements ControllerInterface
@@ -15,6 +15,7 @@ abstract class Controller implements ControllerInterface
     const MESSAGES = "messages";
 
     private $session;
+    private $appModel;
     private $model;
     private $request;
     private $viewData = [];
@@ -24,9 +25,11 @@ abstract class Controller implements ControllerInterface
 
     public function __construct(
         SessionInterface $session,
+        AppModel $appModel,
         ModelInterface $model = null)
     {
         $this->session = $session;
+        $this->appModel = $appModel;
         $this->model = $model;
 
         $this->isPost = $_SERVER["REQUEST_METHOD"] === "POST";
@@ -85,18 +88,13 @@ abstract class Controller implements ControllerInterface
     public function isAdmin(): bool
     {
         $id = intval($this->getSession()->getProperty(Config::USER_ID));
-        return $this->model->isAdmin($id);
+        return $this->appModel->getUserModel()->isAdmin($id);
     }
 
     public function getTemplate(): string
     {
         $curUserId = $this->session->getProperty(Config::USER_ID);
-
-        /**
-         * @var $model Model
-         */
-        $model = $this->getModel();
-        $user = $model->getUserById($curUserId);
+        $user = $this->appModel->getUserModel()->getUserById($curUserId);
 
         return $user->getTemplateFile();
     }
@@ -137,5 +135,10 @@ abstract class Controller implements ControllerInterface
     public function getData(): array
     {
         return $this->viewData;
+    }
+
+    protected function getAppModel(): AppModel
+    {
+        return $this->appModel;
     }
 }
