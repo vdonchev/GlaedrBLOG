@@ -4,7 +4,7 @@
 namespace Framework\Core;
 
 
-class Config
+class ConfigExample
 {
     private function __construct()
     {
