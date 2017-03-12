@@ -1,21 +1,31 @@
 <div class="col-md-9">
     <h1 class="h2">Login form:</h1>
     <hr>
-    <form class="form-horizontal" method="post" action="<?=\Framework\Core\Config::APP_ROOT;?>/user/login">
+    <form class="form-horizontal" method="post" action="<?= \Framework\Core\Config::APP_ROOT; ?>/user/login">
         <fieldset>
             <div class="form-group">
                 <label for="username" class="col-lg-2 control-label">Username
                 </label>
                 <div class="col-lg-10">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"
-                           autocomplete="off">
+                    <input type="text"
+                           class="form-control"
+                           id="username"
+                           name="username"
+                           placeholder="Username"
+                           autocomplete="off"
+                           required="required">
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-lg-2 control-label">Password</label>
                 <div class="col-lg-10">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                           autocomplete="off">
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           name="password"
+                           placeholder="Password"
+                           autocomplete="off"
+                           required="required">
                 </div>
             </div>
             <div class="form-group">

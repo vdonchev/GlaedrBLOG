@@ -10,6 +10,15 @@ class SearchController extends Controller
 {
     public function index()
     {
-        echo "serch controller - index action";
+        $this->redirect("home");
+    }
+
+    public function tag(array $searchData)
+    {
+        $tag = $searchData[0];
+        var_dump(urldecode($tag));
+        // todo
+
+        $this->renderView("search/tag");
     }
 }

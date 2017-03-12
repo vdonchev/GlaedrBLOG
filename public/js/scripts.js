@@ -4,10 +4,10 @@ $(function () {
 
 
 $(function () {
-    $(".delete-post").click(function (e) {
+    $(".delete-item").click(function (e) {
         e.preventDefault();
         aHref = $(this).attr('href');
-        bootbox.confirm("Are you sure that you want to delete this post?", function (conf) {
+        bootbox.confirm("Are you sure that you want to delete this?", function (conf) {
             if (conf) {
                 window.location.href = aHref;
             }

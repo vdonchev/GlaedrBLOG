@@ -21,7 +21,13 @@
                         <?php if (count($post->getTags()) > 0) :; ?>
                             <div class="h4">
                                 Tags:
-                                <span class="label label-primary"><?php echo implode("</span> <span class='label label-primary'>", array_map("renderInView", $post->getTags())); ?></span>
+                                <?php foreach ($post->getTags() as $tag): ; ?>
+                                    <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/search/tag/<?= urlencode($tag); ?>">
+                            <span class="label label-primary">
+                                <?= renderInView($tag); ?>
+                            </span>
+                                    </a>&nbsp;
+                                <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -47,7 +53,7 @@
                                     <li>Author: <strong><?= renderInView($post->getAuthor()); ?></strong></li>
                                 </ul>
 
-                                <?php if ($post->getCreatedOn() !== $post->getUpdatedOn()): ;?>
+                                <?php if ($post->getCreatedOn() !== $post->getUpdatedOn()): ; ?>
                                     <ul class="post-meta list-unstyled list-inline">
                                         <li class="text-muted"><em>Updated on: <?= $post->getUpdatedOn(); ?></em></li>
                                     </ul>
@@ -61,7 +67,7 @@
                                href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
                             </a>
-                            <a class="btn btn-danger btn-sm delete-post"
+                            <a class="btn btn-danger btn-sm delete-item"
                                href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/del/<?= $post->getId(); ?>">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 Delete

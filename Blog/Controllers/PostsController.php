@@ -68,9 +68,10 @@ class PostsController extends Controller
             $authorId = $this->getSession()->getProperty("userId");
             $title = trim($this->getRequest()["postTitle"]);
             $body = trim($this->getRequest()["postBody"]);
-            $createdOn = (new \DateTime())->format('Y-m-d H:i:s');
-            $updatedOn = $createdOn;
-            $tags = array_unique(array_filter(array_map("trim", explode(",", $this->getRequest()["tags"]))));
+            $tags = array_unique(
+                array_filter(
+                    array_map("trim",
+                        explode(",", $this->getRequest()["tags"]))));
 
             if (strlen($title) <= 0) {
                 $this->getSession()->addMessage("Title should be at least 1 characters long!", Messages::DANGER);
@@ -81,11 +82,12 @@ class PostsController extends Controller
             }
 
             if ($this->getSession()->getMessagesCount(Messages::DANGER) <= 0) {
-                if ($postModel->addPost($authorId, $title, $body, $createdOn, $updatedOn)) {
+                if ($postModel->addPost($authorId, $title, $body)) {
                     $postId = $postModel->getLastPostId();
                     foreach ($tags as $tag) {
                         $postModel->addTag($postId, $tag);
                     }
+
                     $this->getSession()->addMessage("The post was created!", Messages::SUCCESS);
                     $this->redirect("posts", "all");
                 } else {
@@ -93,11 +95,6 @@ class PostsController extends Controller
                     $this->redirect("posts", "add");
                 }
             }
-        }
-
-        if (isset($_POST['cancelAdding'])) {
-            $this->getSession()->addMessage("You cancelled adding a post!", Messages::INFO);
-            $this->redirect("posts", "all");
         }
 
         $this->renderView("posts/add");
@@ -130,10 +127,10 @@ class PostsController extends Controller
     }
 
     public function edit($postIdStr)
-        {
+    {
         if (!$this->isAdmin()) {
-        $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
-        $this->redirect("posts", "all");
+            $this->getSession()->addMessage("We are too protected for you, looser!", Messages::DANGER);
+            $this->redirect("posts", "all");
         }
 
         /**
@@ -142,14 +139,13 @@ class PostsController extends Controller
         $postModel = $this->getModel();
 
         if ($this->isPost()) {
-            if (isset($_POST['cancelEditing'])) {
-                $this->getSession()->addMessage("You cancelled editing the post!", Messages::INFO);
-                $this->redirect("posts", "all");
-            }
-
             $title = trim($this->getRequest()["editTitle"]);
             $body = trim($this->getRequest()["editBody"]);
             $postId = filter_var($this->getRequest()["postId"], FILTER_VALIDATE_INT);
+            $tags = array_unique(
+                array_filter(
+                    array_map("trim",
+                        explode(",", $this->getRequest()["editTags"]))));
 
             if ($postId === false || !$postModel->postExists($postId)) {
                 $this->getSession()->addMessage("Invalid post id supplied!", Messages::DANGER);
@@ -168,7 +164,7 @@ class PostsController extends Controller
                 $this->redirect("posts", "edit", [$postId]);
             }
 
-            if ($postModel->editPost($title, $body, $postId)) {
+            if ($postModel->editPost($title, $body, $postId, $tags)) {
                 $this->getSession()->addMessage("The post was edited!", Messages::SUCCESS);
                 $this->redirect("posts", "edit", [$postId]);
             } else {
@@ -224,7 +220,5 @@ class PostsController extends Controller
             $this->getSession()->addMessage("There was a problem deleting the post!", Messages::DANGER);
             $this->redirect("posts", "all");
         }
-
-
     }
 }

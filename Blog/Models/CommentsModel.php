@@ -44,4 +44,26 @@ class CommentsModel extends Model
 
         return $stmt->fetchRow() != null;
     }
+
+    public function commentExists(int $id): bool
+    {
+        $stmt = $this->getDb()->prepare("SELECT id FROM comments WHERE id = ?");
+        $stmt->execute([$id]);
+
+        return $stmt->fetchRow() != null;
+    }
+
+    public function removeComment(int $id): bool
+    {
+        $stmt = $this->getDb()->prepare("UPDATE comments SET deletedOn = NOW() WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function getPostIdForComment(int $commentId): int
+    {
+        $stmt = $this->getDb()->prepare("SELECT postId FROM comments WHERE id = ?");
+        $stmt->execute([$commentId]);
+
+        return $stmt->fetchRow()["postId"];
+    }
 }

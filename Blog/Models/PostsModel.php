@@ -30,7 +30,8 @@ class PostsModel extends Model
                                              posts.updatedOn,
                                              (SELECT COUNT(comments.id) 
                                               FROM comments 
-                                              WHERE comments.postId = posts.id) as commentsCount
+                                              WHERE comments.postId = posts.id
+                                              AND comments.deletedOn IS NULL ) as commentsCount
                                         FROM posts 
                                         INNER JOIN users
                                             ON users.id = posts.authorId
@@ -58,18 +59,33 @@ class PostsModel extends Model
         return intval($stmt->fetchRow()["total"]);
     }
 
-    public function addPost(int $authorId, string $title, string $body, string $createdOn, string $updatedOn)
+    public function addPost(int $authorId, string $title, string $body)
     {
-        $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body, createdOn, updatedOn) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$authorId, $title, $body, $createdOn, $updatedOn]);
+        $stmt = $this->getDb()->prepare("INSERT INTO posts (authorId,title, body) VALUES (?, ?, ?)");
+        return $stmt->execute([$authorId, $title, $body]);
     }
 
-    public function editPost(string $title, string $body, int $postId)
+    public function editPost(string $title, string $body, int $postId, array $tags): bool
     {
         $stmt = $this->getDb()->prepare("UPDATE posts SET title = ?, body = ? WHERE id = ?");
-        return $stmt->execute([$title, $body, $postId]);
+        if (!$stmt->execute([$title, $body, $postId])) {
+            return false;
+        }
+
+        if (!$this->deleteTags($postId)) {
+            return false;
+        }
+
+        foreach ($tags as $tag) {
+            if (!$this->addTag($postId, $tag)) {
+                return false;
+            }
+        }
+
+        return true;
     }
-    public function deletePost(int $postId) :bool
+
+    public function deletePost(int $postId): bool
     {
         $stmt = $this->getDb()->prepare("UPDATE posts SET deletedOn = NOW() WHERE id = ?");
         return $stmt->execute([$postId]);
@@ -79,6 +95,12 @@ class PostsModel extends Model
     {
         $stmt = $this->getDb()->prepare("INSERT INTO post_tags (postId, name) VALUES (?, ?)");
         return $stmt->execute([$postId, $tagName]);
+    }
+
+    public function deleteTags(int $postId): bool
+    {
+        $stmt = $this->getDb()->prepare("DELETE FROM post_tags WHERE postId = ?");
+        return $stmt->execute([$postId]);
     }
 
     public function getPostById(int $id): PostEntity
@@ -92,7 +114,8 @@ class PostsModel extends Model
                                              posts.updatedOn,
                                              (SELECT COUNT(comments.id) 
                                               FROM comments 
-                                              WHERE comments.postId = posts.id) AS commentsCount
+                                              WHERE comments.postId = posts.id 
+                                              AND comments.deletedOn IS NULL) AS commentsCount
                                         FROM posts 
                                         INNER JOIN users
                                             ON users.id = posts.authorId
@@ -153,6 +176,7 @@ class PostsModel extends Model
                                         LEFT JOIN guests
                                             ON comments.guestId = guests.id
                                         WHERE comments.postId = ?
+                                        AND comments.deletedOn IS NULL
                                         ORDER BY comments.id DESC");
 
         $stmt->execute([$id]);
