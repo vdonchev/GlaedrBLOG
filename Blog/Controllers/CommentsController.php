@@ -114,7 +114,7 @@ class CommentsController extends Controller
 
     public function delete(array $commentId)
     {
-        if (!$this->isAdmin()) {
+        if (!$this->isAuthorized() || !$this->isAdmin()) {
             $this->getSession()->addMessage("You are not authorized to perform this action", Messages::DANGER);
             $this->redirect("posts");
         }

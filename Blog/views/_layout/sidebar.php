@@ -1,7 +1,6 @@
 <div class="col-md-3">
-    <h1 class="h2">Sidebar:</h1>
-    <hr>
-    <div>
-        Some test content yield from the sidebar view ;)
-    </div>
+    <?php include_once "sidebar/tags.php";?>
+    <?php include_once "sidebar/most_viewed.php";?>
+    <?php include_once "sidebar/most_commented.php";?>
+    <?php include_once "sidebar/recent.php";?>
 </div>

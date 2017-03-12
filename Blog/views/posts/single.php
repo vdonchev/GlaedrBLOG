@@ -92,13 +92,15 @@
                                 Posted on: <?= renderInView($comment->getCreatedOn()); ?>
                                 <hr>
                                 <p><?= renderInView($comment->getBody()); ?></p>
-                                <div class="text-right">
-                                    <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/comments/delete/<?= $comment->getId(); ?>"
-                                       class="delete-item">
+                                <?php if ($this->isAuthorized() && $this->isAdmin()): ; ?>
+                                    <div class="text-right">
+                                        <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/comments/delete/<?= $comment->getId(); ?>"
+                                           class="delete-item">
                                         <span class="text-danger glyphicon glyphicon-remove-circle"
                                               aria-hidden="true"></span>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

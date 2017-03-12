@@ -6,6 +6,7 @@ namespace Blog\Models;
 
 use Blog\Models\Entities\CommentEntity;
 use Blog\Models\Entities\PostEntity;
+use Blog\Models\Entities\TagEntity;
 use Framework\Core\Config;
 use Framework\Models\Model;
 
@@ -133,7 +134,6 @@ class PostsModel extends Model
         return $post;
     }
 
-
     public function getPostWithCommentsById(int $id): PostEntity
     {
         $stmt = $this->getDb()->prepare("SELECT 
@@ -222,5 +222,103 @@ class PostsModel extends Model
         $stmt->execute([$postId]);
 
         return $stmt->fetchRow() != null;
+    }
+
+    /**
+     * @param int $count
+     * @return \Generator|PostEntity[]
+     */
+    public function getMostViewedPosts(int $count = 5)
+    {
+        $stmt = $this->getDb()->prepare("SELECT 
+                                      posts.id,
+                                      posts.title,
+                                      posts.views
+                                 FROM posts
+                                 WHERE posts.deletedOn IS NULL 
+                                 ORDER BY posts.views DESC 
+                                 LIMIT {$count}");
+
+        $stmt->execute();
+        while ($row = $stmt->fetchObj(PostEntity::class)) {
+            yield $row;
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return \Generator|PostEntity[]
+     */
+    public function getRecentPosts(int $count = 5)
+    {
+        $stmt = $this->getDb()->prepare("SELECT 
+                                      posts.id,
+                                      posts.title,
+                                      posts.createdOn
+                                 FROM posts
+                                 WHERE posts.deletedOn IS NULL 
+                                 ORDER BY posts.createdOn DESC 
+                                 LIMIT {$count}");
+
+        $stmt->execute();
+        while ($row = $stmt->fetchObj(PostEntity::class)) {
+            yield $row;
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return \Generator|PostEntity[]
+     */
+    public function getMostCommentedPosts(int $count = 5)
+    {
+        $stmt = $this->getDb()->prepare("SELECT 
+                                            posts.id,
+                                            posts.title,
+                                        (SELECT COUNT(comments.id) 
+                                        FROM comments 
+                                        WHERE comments.postId = posts.id 
+                                        AND comments.deletedOn IS NULL) AS commentsCount
+                                        FROM posts
+                                        WHERE posts.deletedOn IS NULL 
+                                        ORDER BY commentsCount DESC 
+                                        LIMIT {$count}");
+
+        $stmt->execute();
+        while ($row = $stmt->fetchObj(PostEntity::class)) {
+            yield $row;
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return \Generator|TagEntity[]
+     */
+    public function getMostPopularTags(int $count = 50)
+    {
+        $stmt = $this->getDb()->prepare("SELECT 
+                                            id,
+                                            name, 
+                                            COUNT(name) AS popularity,
+                                            (SELECT COUNT(name) AS p 
+                                             FROM post_tags 
+                                             GROUP BY name 
+                                             ORDER BY p 
+                                             LIMIT 1) AS minPopularity,
+                                            (SELECT COUNT(name) AS p 
+                                             FROM post_tags 
+                                             GROUP BY name 
+                                             ORDER BY p DESC 
+                                             LIMIT 1) AS maxPopularity
+                                        FROM post_tags 
+                                        GROUP BY name 
+                                        ORDER BY name ASC
+                                        LIMIT {$count}");
+
+        $stmt->execute();
+
+        while ($row = $stmt->fetchObj(TagEntity::class)) {
+            yield $row;
+        }
     }
 }
