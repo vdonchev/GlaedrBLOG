@@ -54,7 +54,7 @@ class PostsModel extends Model
 
     public function getNumberOfPosts(): int
     {
-        $stmt = $this->getDb()->prepare("SELECT COUNT(posts.id) AS total FROM posts");
+        $stmt = $this->getDb()->prepare("SELECT COUNT(posts.id) AS total FROM posts WHERE deletedOn IS NULL");
         $stmt->execute();
 
         return intval($stmt->fetchRow()["total"]);
