@@ -297,22 +297,25 @@ class PostsModel extends Model
     public function getMostPopularTags(int $count = 50)
     {
         $stmt = $this->getDb()->prepare("SELECT 
-                                            id,
-                                            name, 
-                                            COUNT(name) AS popularity,
-                                            (SELECT COUNT(name) AS p 
-                                             FROM post_tags 
-                                             GROUP BY name 
-                                             ORDER BY p 
-                                             LIMIT 1) AS minPopularity,
-                                            (SELECT COUNT(name) AS p 
-                                             FROM post_tags 
-                                             GROUP BY name 
-                                             ORDER BY p DESC 
-                                             LIMIT 1) AS maxPopularity
+                                            post_tags.id,
+                                            post_tags.name, 
+                                            COUNT(post_tags.name) AS popularity,
+                                            (SELECT COUNT(post_tags.name) AS p 
+                                            FROM post_tags 
+                                            GROUP BY post_tags.name 
+                                            ORDER BY p 
+                                            LIMIT 1) AS minPopularity,
+                                            (SELECT COUNT(post_tags.name) AS p 
                                         FROM post_tags 
-                                        GROUP BY name 
-                                        ORDER BY name ASC
+                                        GROUP BY post_tags.name 
+                                        ORDER BY p DESC 
+                                        LIMIT 1) AS maxPopularity
+                                        FROM post_tags 
+                                        INNER JOIN posts
+                                        ON posts.id = post_tags.postId
+                                        WHERE posts.deletedOn IS NULL
+                                        GROUP BY post_tags.name 
+                                        ORDER BY post_tags.name ASC
                                         LIMIT {$count}");
 
         $stmt->execute();
