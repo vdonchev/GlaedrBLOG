@@ -29,12 +29,13 @@
             </div>
             <div class="panel-footer">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <div class="panel panel-default post-meta">
                             <div class="panel-body ">
                                 <ul class="post-meta list-unstyled list-inline">
                                     <li>Posted on: <?= $post->getCreatedOn(); ?></li>
                                     <li>Author: <strong><?= renderInView($post->getAuthor()); ?></strong></li>
+                                    <li>Viewed: <?= $post->getViews(); ?> times</li>
                                 </ul>
 
                                 <?php if ($post->getCreatedOn() !== $post->getUpdatedOn()): ; ?>
@@ -46,7 +47,7 @@
                         </div>
                     </div>
                     <?php if ($this->isAuthorized() && $this->isAdmin()): ; ?>
-                        <div class="col-sm-6 text-right">
+                        <div class="col-sm-4 text-right">
                             <a class="btn btn-warning btn-sm"
                                href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/edit/<?= $post->getId(); ?>">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit

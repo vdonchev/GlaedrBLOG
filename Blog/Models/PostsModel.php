@@ -26,6 +26,7 @@ class PostsModel extends Model
                                              users.username as author,
                                              posts.title,
                                              posts.body,
+                                             posts.views,
                                              posts.createdOn,
                                              posts.updatedOn,
                                              (SELECT COUNT(comments.id) 
@@ -110,6 +111,7 @@ class PostsModel extends Model
                                              users.username AS author,
                                              posts.title,
                                              posts.body,
+                                             posts.views,
                                              posts.createdOn,
                                              posts.updatedOn,
                                              (SELECT COUNT(comments.id) 
@@ -139,6 +141,7 @@ class PostsModel extends Model
                                              users.username AS author,
                                              posts.title,
                                              posts.body,
+                                             posts.views,
                                              posts.createdOn,
                                              posts.updatedOn
                                         FROM posts 
@@ -199,6 +202,12 @@ class PostsModel extends Model
         }
 
         return $tags;
+    }
+
+    public function incrementViews(int $postId)
+    {
+        $stmt = $this->getDb()->prepare("UPDATE posts SET posts.views = (posts.views + 1) WHERE posts.id = ?");
+        return $stmt->execute([$postId]);
     }
 
     public function getLastPostId(): int

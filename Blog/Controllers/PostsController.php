@@ -121,6 +121,7 @@ class PostsController extends Controller
         }
 
         $post = $model->getPostWithCommentsById($id);
+        $model->incrementViews($id);
 
         $this->addData("post", $post);
         $this->renderView("posts/single");

@@ -10,6 +10,7 @@ class PostEntity
     private $author;
     private $title;
     private $body;
+    private $views;
     private $createdOn;
     private $updatedOn;
     private $commentsCount;
@@ -39,6 +40,11 @@ class PostEntity
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    public function getViews()
+    {
+        return $this->views;
     }
 
     public function getCreatedOn(): string
