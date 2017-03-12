@@ -12,8 +12,8 @@
                 <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Gleadr Blog
             </a>
         </div>
-        <form class="navbar-form navbar-left" role="search" method="post"
-              action="<?= \Framework\Core\Config::APP_ROOT; ?>/search">
+        <form class="navbar-form navbar-left" name="searchField" role="search" method="post"
+              action="<?= \Framework\Core\Config::APP_ROOT; ?>/search/tag">
             <div class="form-group">
                 <input type="text" name="searchTag" class="form-control" placeholder="Find posts by tag">
             </div>
