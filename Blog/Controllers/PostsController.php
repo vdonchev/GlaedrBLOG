@@ -119,8 +119,8 @@ class PostsController extends Controller
             $this->redirect("posts", "all");
         }
 
-        $post = $model->getPostWithCommentsById($id);
         $model->incrementViews($id);
+        $post = $model->getPostWithCommentsById($id);
 
         $this->addData("post", $post);
         $this->renderView("posts/single");

@@ -17,19 +17,19 @@ class SearchController extends Controller
 
     public function tag(array $searchData)
     {
-//        $tag = $searchData[0];
-//        var_dump(urldecode($tag));
-//        // todo
         if ($this->isPost()) {
             $searchTag = trim($this->getRequest()["searchTag"]);
-            /**
-             * @var $model SearchModel
-             */
-            $model = $this->getModel();
-
-            $this->addData("searchedPosts", $model->getPostsByTagsByName($searchTag));
-            $this->addData("searchedTag", $searchTag);
-            $this->renderView("search/tag");
+        } else {
+            $searchTag = urldecode($searchData[0]);
         }
+
+        /**
+         * @var $model SearchModel
+         */
+        $model = $this->getModel();
+
+        $this->addData("searchedPosts", $model->getPostsByTagsByName($searchTag));
+        $this->addData("searchedTag", $searchTag);
+        $this->renderView("search/tag");
     }
 }
