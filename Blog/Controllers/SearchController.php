@@ -27,7 +27,8 @@ class SearchController extends Controller
              */
             $model = $this->getModel();
 
-            $this->addData("searchedPosts", $model->getTagsByName($searchTag));
+            $this->addData("searchedPosts", $model->getPostsByTagsByName($searchTag));
+            $this->addData("searchedTag", $searchTag);
             $this->renderView("search/tag");
         }
     }

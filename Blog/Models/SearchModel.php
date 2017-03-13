@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Blog\Models;
 
-
 use Framework\Models\Model;
+use Blog\Models\Entities\PostEntity;
 
 class SearchModel extends Model
 {
-    public function getTagsByName(string $name){
-        var_dump($name);
+    public function getPostsByTagsByName(string $name){
         $stmt = $this->getDb()->prepare("SELECT 
                                             posts.id,
                                             users.username AS author,
@@ -36,7 +34,7 @@ class SearchModel extends Model
          * @var $post PostEntity
          */
         while ($post = $stmt->fetchObj(PostEntity::class)) {
-            $post->setTags($this->getPostTags($post->getId()));
+            $post->setTags($this->getPostsByTagsByName($post->getId()));
             $posts[] = $post;
         }
 

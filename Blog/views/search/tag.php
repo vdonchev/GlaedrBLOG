@@ -1,12 +1,13 @@
+<?php $tag = $this->getData()["searchedTag"]; ?>
 <div class="col-md-9">
-    <h1 class="h2">Search results:</h1>
+    <h1 class="h2">Search results by tag "<?="{$tag}"?>" :</h1>
     <hr>
-    Hi there -> search results here
 </div>
 
 <?php $posts = $this->getData()["searchedPosts"]; ?>
 <?php /** @var $posts \Blog\Models\Entities\PostEntity[] */; ?>
 <div class="col-md-9">
+    <?php if(count($posts) > 0): ?>
     <?php foreach ($posts as $post): ; ?>
         <div class="panel panel-default">
             <div class="panel-body">
@@ -81,27 +82,9 @@
             </div>
         </div>
     <?php endforeach; ?>
-    <?php $selectedPage = $this->getData()["selectedPage"]; ?>
-    <?php $firstPage = $this->getData()["firstPage"]; ?>
-    <?php $lastPage = $this->getData()["lastPage"]; ?>
-    <ul class="pager">
-        <?php if ($firstPage < $selectedPage): ; ?>
-            <li class="previous"><a
-                        href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/1">&lt;&lt;</a></li>
-            <li class="previous"><a
-                        href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $selectedPage - 1; ?>">&larr;
-                    Newer </a></li>
-        <?php else: ; ?>
-            <li class="previous disabled"><span>&larr; Newer </span></li>
-        <?php endif; ?>
-
-        <?php if ($lastPage > $selectedPage): ; ?>
-            <li class="next"><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $lastPage; ?>">
-                    &gt;&gt;</a></li>
-            <li class="next"><a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/all/<?= $selectedPage + 1; ?>">
-                    Older &rarr;</a></li>
-        <?php else: ; ?>
-            <li class="next disabled"><span> Older &rarr;</span></li>
-        <?php endif; ?>
-    </ul>
+    <?php else : ?>
+        <div class="col-md-9">
+            <h1 class="h4">No results by tag "<?="{$tag}"?>". </h1>
+        </div>
+    <?php endif; ?>
 </div>
