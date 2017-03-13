@@ -9,7 +9,7 @@
         <li class="list-group-item">
             <span class="badge"><?= $post->getCommentsCount(); ?></span>
             <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/view/<?= $post->getId(); ?>">
-                <?= $post->getTitle(); ?>
+                <?= renderInView($post->getTitle()); ?>
             </a>
         </li>
     <?php endforeach; ?>

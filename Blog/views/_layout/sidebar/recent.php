@@ -8,7 +8,7 @@
     <?php foreach ($posts as $post): ?>
         <li class="list-group-item">
             <a href="<?= \Framework\Core\Config::APP_ROOT; ?>/posts/view/<?= $post->getId(); ?>">
-                <?= $post->getTitle(); ?>
+                <?= renderInView($post->getTitle()); ?>
             </a>
         </li>
     <?php endforeach; ?>
