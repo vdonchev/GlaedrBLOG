@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Blog\Controllers;
 
 use Blog\Models\Entities\PostEntity;

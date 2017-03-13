@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Framework\Core;
-
 
 use Blog\Models\AppModel;
 use Framework\Core\Database\DatabaseInterface;
