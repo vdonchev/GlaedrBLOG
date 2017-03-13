@@ -1,7 +1,7 @@
 <?php /** @var $user \Blog\Models\Entities\UserEntity */ ?>
 <?php $user = $this->getData()["user"]; ?>
 <div class="col-md-9">
-    <h1 class="h2">Your Profile</h1>
+    <h1 class="h2"><td><strong>Welcome, <?= renderInView($user->getUsername()) ?>!</strong></td></h1>
     <hr>
     <table class="table table-bordered table-responsive">
         <thead>
