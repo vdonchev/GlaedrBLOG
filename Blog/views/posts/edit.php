@@ -14,7 +14,7 @@
                            class="form-control"
                            id="editTitle"
                            name="editTitle"
-                           value="<?= $post->getTitle() ?>"
+                           value="<?= renderInView($post->getTitle()); ?>"
                            required="required">
                 </div>
             </div>
@@ -25,7 +25,7 @@
                               rows="5"
                               name="editBody"
                               id="editBody"
-                              required="required"><?= $post->getBody(); ?></textarea>
+                              required="required"><?= renderInView($post->getBody()); ?></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -36,7 +36,7 @@
                               name="editTags"
                               id="editTags"
                               required="required"
-                    ><?= implode(",", $post->getTags()); ?></textarea>
+                    ><?= renderInView(implode(",", $post->getTags())); ?></textarea>
                 </div>
             </div>
             <hr>

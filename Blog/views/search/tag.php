@@ -46,7 +46,7 @@
         <?php endforeach; ?>
     <?php else : ?>
         <div class="col-md-9">
-            <h1 class="h4">No results by tag "<?= "{$tag}" ?>". </h1>
+            <h1 class="h4">No results by tag "<?= renderInView($tag); ?>". </h1>
         </div>
     <?php endif; ?>
 </div>
